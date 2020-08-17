@@ -39,9 +39,7 @@ pub type MenuResult = Result<(), Error>;
 /// ```
 /// # use serenity::{
 /// #     builder::CreateEmbed,
-/// #     collector::ReactionAction,
-/// #     futures::StreamExt,
-/// #     model::prelude::{Message, Reaction, ReactionType},
+/// #     model::prelude::Message,
 /// #     prelude::Context,
 /// # };
 /// use serenity_utils::{menu::{Menu, MenuOptions}, Error};
@@ -58,7 +56,7 @@ pub type MenuResult = Result<(), Error>;
 ///     // Creates a new menu.
 ///     let mut menu = Menu::new(ctx, msg, &pages, MenuOptions::default());
 ///
-///     // Runs the menu and returns optional `Message`.
+///     // Runs the menu and returns optional `Message` used to display the menu.
 ///     let opt_message = menu.run().await?;
 ///
 ///     Ok(())
@@ -345,7 +343,7 @@ impl<'a> Control<'a> {
 /// ```
 /// # use serenity::model::channel::Reaction;
 /// # use serenity_utils::menu::Menu;
-///
+/// #
 /// # async fn first_page<'a>(menu: &mut Menu<'a>, reaction: Reaction) {}
 /// #
 /// use std::sync::Arc;

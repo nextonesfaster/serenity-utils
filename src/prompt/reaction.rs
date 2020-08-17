@@ -52,7 +52,10 @@ use std::time::Duration;
 ///
 ///     let prompt_msg = ChannelId(7).say(&ctx.http, "Dogs or cats?").await?;
 ///
-///     // Creates the prompt and returns the emoji reaction and the emoji itself.
+///     // Creates the prompt and returns the result. Because of `reaction_prompt`'s
+///     // return type, you can use the `?` operator to get the result.
+///     // The `Ok()` value is the selected emoji's index (wrt the `emojis` slice)
+///     // and the emoji itself. We don't require the emoji here, so we ignore it.
 ///     let (idx, _) = reaction_prompt(
 ///         ctx,
 ///         &prompt_msg,
