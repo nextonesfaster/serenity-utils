@@ -75,7 +75,7 @@ pub struct Menu<'a> {
     /// The embeds of the menu.
     pub pages: &'a [CreateEmbed],
     /// The menu options.
-    pub options: MenuOptions<'a>,
+    pub options: MenuOptions,
 }
 
 impl<'a> Menu<'a> {
@@ -84,7 +84,7 @@ impl<'a> Menu<'a> {
         ctx: &'a Context,
         msg: &'a Message,
         pages: &'a [CreateEmbed],
-        options: MenuOptions<'a>,
+        options: MenuOptions,
     ) -> Self {
         Self {
             ctx,
@@ -251,7 +251,7 @@ impl<'a> Menu<'a> {
 /// [`close_menu`]: fn.close_menu.html
 /// [`next_page`]: fn.next_page.html
 /// [`Control`]: struct.Control.html
-pub struct MenuOptions<'a> {
+pub struct MenuOptions {
     /// The 0-indexed page number to start at.
     pub page: usize,
     /// Number of seconds to keep the menu active.
@@ -262,16 +262,16 @@ pub struct MenuOptions<'a> {
     /// message to display the menu. This message must be sent by the bot.
     pub message: Option<Message>,
     /// The controls for the menu.
-    pub controls: Vec<Control<'a>>,
+    pub controls: Vec<Control>,
 }
 
-impl<'a> MenuOptions<'a> {
+impl MenuOptions {
     /// Creates a new [`MenuOptions`](struct.MenuOptions.html) object.
     pub fn new(
         page: usize,
         timeout: f64,
         message: Option<Message>,
-        controls: Vec<Control<'a>>,
+        controls: Vec<Control>,
     ) -> Self {
         Self {
             page,
@@ -282,7 +282,7 @@ impl<'a> MenuOptions<'a> {
     }
 }
 
-impl<'a> Default for MenuOptions<'a> {
+impl Default for MenuOptions {
     fn default() -> Self {
         let controls = vec![
             Control::new('◀'.into(), Arc::new(|m, r| Box::pin(prev_page(m, r)))),
@@ -306,16 +306,16 @@ impl<'a> Default for MenuOptions<'a> {
 /// they are implemented.
 ///
 /// [`ControlFunction`]: type.ControlFunction.html
-pub struct Control<'a> {
+pub struct Control {
     /// The emoji for the control.
     pub emoji: ReactionType,
     /// The [`ControlFunction`](type.ControlFunction.html) to control the behaviour.
-    pub function: ControlFunction<'a>,
+    pub function: ControlFunction,
 }
 
-impl<'a> Control<'a> {
+impl Control {
     /// Creates a new [`Control`](struct.Control.html) object.
-    pub fn new(emoji: ReactionType, function: ControlFunction<'a>) -> Self {
+    pub fn new(emoji: ReactionType, function: ControlFunction) -> Self {
         Self { emoji, function }
     }
 }
@@ -354,8 +354,8 @@ impl<'a> Control<'a> {
 /// Now, `control_function` can be used to control a menu.
 ///
 /// [`ControlFunction`]: type.ControlFunction.html
-pub type ControlFunction<'a> = Arc<
-    dyn for<'b> Fn(&'b mut Menu<'a>, Reaction) -> Pin<Box<dyn Future<Output = ()> + 'b + Send>>
+pub type ControlFunction = Arc<
+    dyn for<'b> Fn(&'b mut Menu<'_>, Reaction) -> Pin<Box<dyn Future<Output = ()> + 'b + Send>>
         + Sync
         + Send,
 >;
@@ -375,7 +375,7 @@ pub type ControlFunction<'a> = Arc<
 /// `next_page_cfn` is a [`ControlFunction`] and can be used to control a menu.
 ///
 /// [`ControlFunction`]: type.ControlFunction.html
-pub async fn next_page<'a>(menu: &mut Menu<'a>, reaction: Reaction) {
+pub async fn next_page(menu: &mut Menu<'_>, reaction: Reaction) {
     let _ = &reaction.delete(&menu.ctx.http).await;
 
     if menu.options.page == menu.pages.len() - 1 {
@@ -400,7 +400,7 @@ pub async fn next_page<'a>(menu: &mut Menu<'a>, reaction: Reaction) {
 /// `prev_page_cfn` is a [`ControlFunction`] and can be used to control a menu.
 ///
 /// [`ControlFunction`]: type.ControlFunction.html
-pub async fn prev_page<'a>(menu: &mut Menu<'a>, reaction: Reaction) {
+pub async fn prev_page(menu: &mut Menu<'_>, reaction: Reaction) {
     let _ = reaction.delete(&menu.ctx.http).await;
 
     if menu.options.page == 0 {
@@ -425,7 +425,7 @@ pub async fn prev_page<'a>(menu: &mut Menu<'a>, reaction: Reaction) {
 /// `close_menu_cfn` is a [`ControlFunction`] and can be used to control a menu.
 ///
 /// [`ControlFunction`]: type.ControlFunction.html
-pub async fn close_menu<'a>(menu: &mut Menu<'a>, _reaction: Reaction) {
+pub async fn close_menu(menu: &mut Menu<'_>, _reaction: Reaction) {
     let _ = menu
         .options
         .message

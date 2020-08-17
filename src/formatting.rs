@@ -180,13 +180,13 @@ pub fn pagify<S: ToString>(text: S, mut options: PagifyOptions<'_>) -> Vec<Strin
                 sliced_text.matches("@here").count() + sliced_text.matches("@everyone").count();
         }
 
-        let possible_delims = options
+        let mut possible_delims = options
             .delims
             .iter()
             .filter_map(|&d| in_text[1..this_page_len].rfind(d).map(|i| i + 1));
 
         let closest_delim = if options.priority {
-            possible_delims.filter(|&d| d > 1).next()
+            possible_delims.find(|&d| d> 1)
         } else {
             possible_delims.max()
         }
