@@ -3,6 +3,12 @@ name = "serenity_utils"
 version = "0.1.0"
 authors = ["AriusX7 <icyligii@gmail.com>"]
 edition = "2018"
+license = "ISC"
+readme = "README.md"
+description = "A library to provide additional utilies for Discord bots created with serenity."
+homepage = "https://github.com/AriusX7/serenity-utils"
+repository = "https://github.com/AriusX7/serenity-utils"
+keywords = ["discord", "serenity", "utilities", "rust"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
