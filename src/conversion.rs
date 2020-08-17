@@ -1,4 +1,4 @@
-//! Provides a trait to convert strings into serenity's models.
+//! Provides a trait to convert strings into serenity's guild-specific models.
 //!
 //! The trait provides two methods:
 //! - [`from_guild_and_str`]
@@ -193,7 +193,7 @@ impl Conversion for Member {
             Ok(id) => id,
             Err(_) => match parse_mention(arg) {
                 Some(id) => id,
-                None => return None
+                None => return None,
             },
         };
 
@@ -276,7 +276,10 @@ async fn member_from_mapping(arg: &str, members: &HashMap<UserId, Member>) -> Op
     }
 }
 
-async fn channel_from_mapping(arg: &str, channels: &HashMap<ChannelId, GuildChannel>) -> Option<GuildChannel> {
+async fn channel_from_mapping(
+    arg: &str,
+    channels: &HashMap<ChannelId, GuildChannel>,
+) -> Option<GuildChannel> {
     match arg.parse::<u64>() {
         // `arg` is a channel ID.
         Ok(id) => channels.get(&ChannelId(id)).cloned(),
