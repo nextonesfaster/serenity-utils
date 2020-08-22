@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning][semver].
 - Add message and embed builders.
 - Add full message support for menus.
 - Preludes to easily import commonly used types at once.
+- [documentation] Add CHANGELOG.md
 
 ### Changed
 
