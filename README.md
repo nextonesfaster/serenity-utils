@@ -149,13 +149,13 @@ version = "0.2.0"
 # To disable default features.
 default-features = false
 
-features = ["select", "features]
-# Example: features = ["cache", "native_tls_backend"]
+# Choose features you need.
+features = ["cache", "native_tls_backend]
 ```
 
 ## License
 
-serenity_utils is available under the ISC license. See [LICENSE](LICENSE.md) for more details.
+`serenity_utils` is available under the ISC license. See [LICENSE](LICENSE.md) for more details.
 
 [serenity]: https://github.com/serenity-rs/serenity
 [serenity_utils]: https://github.com/AriusX7/serenity-utils
