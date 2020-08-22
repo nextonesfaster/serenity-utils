@@ -5,6 +5,7 @@
 //! - Get user response using message or reaction prompts.
 //! - Display paginated reaction-based messages/menus.
 //! - Format text in different ways before sending.
+//! - Create embeds and messages with field access.
 //!
 //! See module level documentation for in-depth info about the utilities
 //! provided by this crate.
