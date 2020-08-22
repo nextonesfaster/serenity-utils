@@ -186,7 +186,7 @@ pub fn pagify<S: ToString>(text: S, mut options: PagifyOptions<'_>) -> Vec<Strin
             .filter_map(|&d| in_text[1..this_page_len].rfind(d).map(|i| i + 1));
 
         let closest_delim = if options.priority {
-            possible_delims.find(|&d| d> 1)
+            possible_delims.find(|&d| d > 1)
         } else {
             possible_delims.max()
         }
