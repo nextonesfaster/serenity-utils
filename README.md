@@ -11,6 +11,7 @@ This library provides implementations to easily:
 - Get user response using message or reaction prompts.
 - Display paginated reaction-based messages/menus.
 - Format text in different ways before sending.
+- Create embeds and messages with field access.
 
 ## Installation and Usage
 
