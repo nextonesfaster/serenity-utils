@@ -29,7 +29,11 @@
 //! Other builders can be used in a similar fashion.
 
 use super::embed::EmbedBuilder;
-use serenity::{builder::CreateMessage, http::AttachmentType, model::channel::ReactionType};
+use serenity::{
+    builder::{CreateMessage, EditMessage},
+    http::AttachmentType,
+    model::channel::ReactionType,
+};
 
 /// A struct to build a message.
 ///
@@ -271,6 +275,46 @@ impl<'a> From<&MessageBuilder<'a>> for CreateMessage<'a> {
         message.reactions(message_builder.reactions.clone());
 
         message.tts(message_builder.tts);
+
+        message
+    }
+}
+
+impl<'a> From<MessageBuilder<'a>> for EditMessage {
+    fn from(message_builder: MessageBuilder<'a>) -> Self {
+        let mut message = EditMessage::default();
+
+        if let Some(content) = message_builder.content {
+            message.content(content);
+        }
+
+        if let Some(embed) = message_builder.embed {
+            message.embed(|e| {
+                e.0 = embed.to_create_embed().0;
+
+                e
+            });
+        }
+
+        message
+    }
+}
+
+impl<'a> From<&MessageBuilder<'a>> for EditMessage {
+    fn from(message_builder: &MessageBuilder<'a>) -> Self {
+        let mut message = EditMessage::default();
+
+        if let Some(content) = &message_builder.content {
+            message.content(content);
+        }
+
+        if let Some(embed) = &message_builder.embed {
+            message.embed(|e| {
+                e.0 = embed.to_create_embed().0;
+
+                e
+            });
+        }
 
         message
     }
