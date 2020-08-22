@@ -21,6 +21,7 @@
 //!
 //! [`serenity`]: https://github.com/serenity-rs/serenity
 
+pub mod builder;
 pub mod conversion;
 mod error;
 pub mod formatting;
