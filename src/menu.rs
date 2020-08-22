@@ -16,9 +16,8 @@
 //! [`Red-DiscordBot`]: https://github.com/Cog-Creators/Red-DiscordBot/
 //! [`menu`]: https://github.com/Cog-Creators/Red-DiscordBot/blob/46eb9ce7a0bcded991af02665fec39fcb542c76d/redbot/core/utils/menus.py#L17
 
-use crate::Error;
+use crate::{Error, builder::message::MessageBuilder};
 use serenity::{
-    builder::CreateEmbed,
     collector::ReactionAction,
     futures::StreamExt,
     model::prelude::{Message, Reaction, ReactionType},
@@ -32,26 +31,41 @@ pub type MenuResult = Result<(), Error>;
 /// A fully functioning reaction-based menu.
 ///
 /// A reaction menu is a paginated message where the user can use reactions to
-/// change the page/content of the message. Currently, only embeds are supported.
+/// change the page/content of the message.
 ///
 /// ## Example
 ///
 /// ```
 /// # use serenity::{
-/// #     builder::CreateEmbed,
 /// #     model::prelude::Message,
 /// #     prelude::Context,
 /// # };
-/// use serenity_utils::{menu::{Menu, MenuOptions}, Error};
+/// use serenity_utils::{
+///     builder::message::MessageBuilder,
+///     menu::{Menu, MenuOptions},
+///     Error
+/// };
 ///
 /// async fn use_menu(ctx: &Context, msg: &Message) -> Result<(), Error> {
-///     let mut page_one = CreateEmbed::default();
-///     page_one.description("Page number one!");
+///     let mut message_one = MessageBuilder::default();
+///     message_one
+///         .set_content("Page number one!")
+///         .set_embed_with(|e| {
+///             e.set_description("The first page!");
 ///
-///     let mut page_two = CreateEmbed::default();
-///     page_two.description("Page number two!");
+///             e
+///         });
 ///
-///     let pages = [page_one, page_two];
+///     let mut message_two = MessageBuilder::default();
+///     message_two
+///         .set_content("Page number two!")
+///         .set_embed_with(|e| {
+///             e.set_description("The second page!");
+///
+///             e
+///         });
+///
+///     let pages = [message_one, message_two];
 ///
 ///     // Creates a new menu.
 ///     let mut menu = Menu::new(ctx, msg, &pages, MenuOptions::default());
@@ -72,8 +86,8 @@ pub struct Menu<'a> {
     pub ctx: &'a Context,
     /// The invocation message.
     pub msg: &'a Message,
-    /// The embeds of the menu.
-    pub pages: &'a [CreateEmbed],
+    /// The pages of the menu.
+    pub pages: &'a [MessageBuilder<'a>],
     /// The menu options.
     pub options: MenuOptions,
 }
@@ -83,7 +97,7 @@ impl<'a> Menu<'a> {
     pub fn new(
         ctx: &'a Context,
         msg: &'a Message,
-        pages: &'a [CreateEmbed],
+        pages: &'a [MessageBuilder<'a>],
         options: MenuOptions,
     ) -> Self {
         Self {
@@ -103,8 +117,8 @@ impl<'a> Menu<'a> {
     /// - Current user/bot doesn't have the permissions to add reactions.
     /// - `msg` is specified in [`MenuOptions`] but the current user/bot isn't
     ///     the author of the message.
-    /// - The embed content lengths are over Discord's limit.
-    /// - Current user/bot doesn't have the permissions to send an embed.
+    /// - The message content lengths are over Discord's limit.
+    /// - Current user/bot doesn't have the permissions to send an message/embed.
     /// - If `pages` is empty.
     /// - If the page number specified in [`MenuOptions`] is out of bounds.
     ///
@@ -148,11 +162,9 @@ impl<'a> Menu<'a> {
             Some(m) => {
                 m.clone()
                     .edit(&self.ctx.http, |m| {
-                        m.embed(|e| {
-                            e.clone_from(page);
+                        m.0 = page.to_edit_message().0;
 
-                            e
-                        })
+                        m
                     })
                     .await?;
             }
@@ -161,11 +173,12 @@ impl<'a> Menu<'a> {
                     .msg
                     .channel_id
                     .send_message(&self.ctx.http, |m| {
-                        m.embed(|e| {
-                            e.clone_from(page);
+                        let message = page.to_create_message();
+                        m.0 = message.0;
+                        m.1 = message.1;
+                        m.2 = message.2;
 
-                            e
-                        })
+                        m
                     })
                     .await?;
 
