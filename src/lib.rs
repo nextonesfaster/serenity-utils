@@ -15,12 +15,18 @@
 //! To use this crate, add the following to your `Cargo.toml`:
 //! ```toml
 //! [dependencies]
-//! serenity_utils = "0.1.0"
+//! serenity_utils = "0.2.0"
 //! ```
 //!
 //! **Note:** This crate only supports [`serenity`]'s async versions.
 //!
+//! ## Examples
+//!
+//! Examples detailing and explaining usage of the basic functionality of the
+//! library can be found in the [`examples`] directory.
+//!
 //! [`serenity`]: https://github.com/serenity-rs/serenity
+//! [`examples`]: https://github.com/AriusX7/serenity_utils/tree/master/examples
 
 pub mod builder;
 pub mod conversion;
