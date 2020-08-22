@@ -226,6 +226,16 @@ impl<'a> MessageBuilder<'a> {
     pub fn to_create_message(&self) -> CreateMessage {
         self.into()
     }
+
+    /// Converts [`MessageBuilder`] into serenity's `EditMessage`.
+    ///
+    /// The resultant `EditMessage` only has content and embed — all other
+    /// fields are ignored.
+    ///
+    /// [`MessageBuilder`]: struct.MessageBuilder.html
+    pub fn to_edit_message(&self) -> EditMessage {
+        self.into()
+    }
 }
 
 impl<'a> From<MessageBuilder<'a>> for CreateMessage<'a> {
