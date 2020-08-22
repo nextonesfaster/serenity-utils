@@ -7,7 +7,7 @@
 //! Import all commonly used types into scope:
 //!
 //! ```rust,no_run
-//! use serenity_utils::prelure::*;
+//! use serenity_utils::prelude::*;
 //! ```
 
 pub use super::builder::prelude::{EmbedBuilder, MessageBuilder};
