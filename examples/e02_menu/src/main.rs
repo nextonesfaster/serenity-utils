@@ -4,7 +4,6 @@
 
 use serenity::{
     async_trait,
-    builder::CreateEmbed,
     client::{Client, Context, EventHandler},
     framework::standard::{
         macros::{command, group},
@@ -13,8 +12,8 @@ use serenity::{
     model::prelude::{Message, Reaction, ReactionType, Ready},
 };
 
-// Bring menu items into scope.
-use serenity_utils::menu::*;
+// Bring menu items into scope along with `MessageBuilder`.
+use serenity_utils::{builder::message::MessageBuilder, menu::*};
 
 use std::{env, sync::Arc};
 
@@ -71,20 +70,26 @@ async fn scoreboard(ctx: &Context, msg: &Message) -> CommandResult {
     };
 
     // Now, we need pages to display the scoreboard.
-    let mut page_one = CreateEmbed::default();
-    page_one
-        .title("Player A")
-        .description("Player A scored 10 points!");
+    let mut page_one = MessageBuilder::default();
+    page_one.set_content("Player A!").set_embed_with(|e| {
+        e.set_description("Player A scored 10 points!");
 
-    let mut page_two = CreateEmbed::default();
-    page_two
-        .title("Player B")
-        .description("Player B scored 5 points!");
+        e
+    });
 
-    let mut page_three = CreateEmbed::default();
-    page_three
-        .title("Player C")
-        .description("Player C scored 8 points!");
+    let mut page_two = MessageBuilder::default();
+    page_two.set_content("Player B!").set_embed_with(|e| {
+        e.set_description("Player B scored 5 points!");
+
+        e
+    });
+
+    let mut page_three = MessageBuilder::default();
+    page_three.set_content("Player C!").set_embed_with(|e| {
+        e.set_description("Player C scored 8 points!");
+
+        e
+    });
 
     let pages = &[page_one, page_two, page_three];
 
