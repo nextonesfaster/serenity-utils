@@ -90,7 +90,9 @@ pub async fn reaction_prompt(
     timeout: f32,
 ) -> Result<(usize, ReactionType), Error> {
     for emoji in emojis {
-        ctx.http.create_reaction(msg.channel_id.0, msg.id.0, &emoji).await?;
+        ctx.http
+            .create_reaction(msg.channel_id.0, msg.id.0, &emoji)
+            .await?;
     }
 
     let mut collector = user

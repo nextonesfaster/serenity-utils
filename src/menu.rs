@@ -16,7 +16,7 @@
 //! [`Red-DiscordBot`]: https://github.com/Cog-Creators/Red-DiscordBot/
 //! [`menu`]: https://github.com/Cog-Creators/Red-DiscordBot/blob/46eb9ce7a0bcded991af02665fec39fcb542c76d/redbot/core/utils/menus.py#L17
 
-use crate::{Error, builder::message::MessageBuilder};
+use crate::{builder::message::MessageBuilder, Error};
 use serenity::{
     collector::ReactionAction,
     futures::StreamExt,
@@ -219,7 +219,10 @@ impl<'a> Menu<'a> {
 
     async fn add_reactions(&self, msg: &Message) -> MenuResult {
         for control in &self.options.controls {
-            self.ctx.http.create_reaction(msg.channel_id.0, msg.id.0, &control.emoji).await?;
+            self.ctx
+                .http
+                .create_reaction(msg.channel_id.0, msg.id.0, &control.emoji)
+                .await?;
         }
 
         Ok(())
