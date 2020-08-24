@@ -4,6 +4,7 @@
 
 use serenity::{
     async_trait,
+    builder::CreateMessage,
     client::{Client, Context, EventHandler},
     framework::standard::{
         macros::{command, group},
@@ -12,8 +13,8 @@ use serenity::{
     model::prelude::{Message, Reaction, ReactionType, Ready},
 };
 
-// Bring menu items into scope along with `MessageBuilder`.
-use serenity_utils::{builder::message::MessageBuilder, menu::*};
+// Bring menu items into scope along.
+use serenity_utils::menu::*;
 
 use std::{env, sync::Arc};
 
@@ -70,23 +71,23 @@ async fn scoreboard(ctx: &Context, msg: &Message) -> CommandResult {
     };
 
     // Now, we need pages to display the scoreboard.
-    let mut page_one = MessageBuilder::default();
-    page_one.set_content("Player A!").set_embed_with(|e| {
-        e.set_description("Player A scored 10 points!");
+    let mut page_one = CreateMessage::default();
+    page_one.content("Player A!").embed(|e| {
+        e.description("Player A scored 10 points!");
 
         e
     });
 
-    let mut page_two = MessageBuilder::default();
-    page_two.set_content("Player B!").set_embed_with(|e| {
-        e.set_description("Player B scored 5 points!");
+    let mut page_two = CreateMessage::default();
+    page_two.content("Player B!").embed(|e| {
+        e.description("Player B scored 5 points!");
 
         e
     });
 
-    let mut page_three = MessageBuilder::default();
-    page_three.set_content("Player C!").set_embed_with(|e| {
-        e.set_description("Player C scored 8 points!");
+    let mut page_three = CreateMessage::default();
+    page_three.content("Player C!").embed(|e| {
+        e.description("Player C scored 8 points!");
 
         e
     });
@@ -94,7 +95,7 @@ async fn scoreboard(ctx: &Context, msg: &Message) -> CommandResult {
     let pages = &[page_one, page_two, page_three];
 
     // Finally, we'll create a menu and run it.
-    let mut menu = Menu::new(ctx, msg, pages, options);
+    let menu = Menu::new(ctx, msg, pages, options);
     let _ = menu.run().await?;
 
     Ok(())

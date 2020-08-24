@@ -73,30 +73,30 @@ async fn prompt(ctx: &Context, msg: &Message) -> Result<(), Error> {
 
 ```rust
 use serenity::{
+    builder::CreateMessage,
     model::prelude::Message,
     prelude::Context,
 };
 use serenity_utils::{
-    builder::message::MessageBuilder,
     menu::{Menu, MenuOptions},
     Error,
 };
 
 async fn use_menu(ctx: &Context, msg: &Message) -> Result<(), Error> {
-    let mut page_one = MessageBuilder::default();
+    let mut page_one = CreateMessage::default();
     page_one
-        .set_content("Page number one!")
-        .set_embed_with(|e| {
-            e.set_description("The first page!");
+        .content("Page number one!")
+        .embed(|e| {
+            e.description("The first page!");
 
             e
         });
 
-    let mut page_two = MessageBuilder::default();
+    let mut page_two = CreateMessage::default();
     page_two
-        .set_content("Page number two!")
-        .set_embed_with(|e| {
-            e.set_description("The second page!");
+        .content("Page number two!")
+        .embed(|e| {
+            e.description("The second page!");
 
             e
         });
@@ -104,7 +104,7 @@ async fn use_menu(ctx: &Context, msg: &Message) -> Result<(), Error> {
     let pages = [page_one, page_two];
 
     // Creates a new menu.
-    let mut menu = Menu::new(ctx, msg, &pages, MenuOptions::default());
+    let menu = Menu::new(ctx, msg, &pages, MenuOptions::default());
 
     // Runs the menu and returns optional `Message` used to display the menu.
     let opt_message = menu.run().await?;

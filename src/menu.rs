@@ -16,8 +16,9 @@
 //! [`Red-DiscordBot`]: https://github.com/Cog-Creators/Red-DiscordBot/
 //! [`menu`]: https://github.com/Cog-Creators/Red-DiscordBot/blob/46eb9ce7a0bcded991af02665fec39fcb542c76d/redbot/core/utils/menus.py#L17
 
-use crate::{builder::message::MessageBuilder, Error};
+use crate::Error;
 use serenity::{
+    builder::CreateMessage,
     collector::ReactionAction,
     futures::StreamExt,
     model::prelude::{Message, Reaction, ReactionType},
@@ -37,30 +38,30 @@ pub type MenuResult = Result<(), Error>;
 ///
 /// ```
 /// # use serenity::{
+/// #     builder::CreateMessage,
 /// #     model::prelude::Message,
 /// #     prelude::Context,
 /// # };
 /// use serenity_utils::{
-///     builder::message::MessageBuilder,
 ///     menu::{Menu, MenuOptions},
 ///     Error
 /// };
 ///
 /// async fn use_menu(ctx: &Context, msg: &Message) -> Result<(), Error> {
-///     let mut message_one = MessageBuilder::default();
+///     let mut message_one = CreateMessage::default();
 ///     message_one
-///         .set_content("Page number one!")
-///         .set_embed_with(|e| {
-///             e.set_description("The first page!");
+///         .content("Page number one!")
+///         .embed(|e| {
+///             e.description("The first page!");
 ///
 ///             e
 ///         });
 ///
-///     let mut message_two = MessageBuilder::default();
+///     let mut message_two = CreateMessage::default();
 ///     message_two
-///         .set_content("Page number two!")
-///         .set_embed_with(|e| {
-///             e.set_description("The second page!");
+///         .content("Page number two!")
+///         .embed(|e| {
+///             e.description("The second page!");
 ///
 ///             e
 ///         });
@@ -68,7 +69,7 @@ pub type MenuResult = Result<(), Error>;
 ///     let pages = [message_one, message_two];
 ///
 ///     // Creates a new menu.
-///     let mut menu = Menu::new(ctx, msg, &pages, MenuOptions::default());
+///     let menu = Menu::new(ctx, msg, &pages, MenuOptions::default());
 ///
 ///     // Runs the menu and returns optional `Message` used to display the menu.
 ///     let opt_message = menu.run().await?;
@@ -87,7 +88,7 @@ pub struct Menu<'a> {
     /// The invocation message.
     pub msg: &'a Message,
     /// The pages of the menu.
-    pub pages: &'a [MessageBuilder<'a>],
+    pub pages: &'a [CreateMessage<'a>],
     /// The menu options.
     pub options: MenuOptions,
 }
@@ -97,7 +98,7 @@ impl<'a> Menu<'a> {
     pub fn new(
         ctx: &'a Context,
         msg: &'a Message,
-        pages: &'a [MessageBuilder<'a>],
+        pages: &'a [CreateMessage<'a>],
         options: MenuOptions,
     ) -> Self {
         Self {
@@ -161,7 +162,7 @@ impl<'a> Menu<'a> {
         match &mut self.options.message {
             Some(m) => {
                 m.edit(&self.ctx.http, |m| {
-                    m.0 = page.to_edit_message().0;
+                    m.0.clone_from(&page.0);
 
                     m
                 })
@@ -172,10 +173,7 @@ impl<'a> Menu<'a> {
                     .msg
                     .channel_id
                     .send_message(&self.ctx.http, |m| {
-                        let message = page.to_create_message();
-                        m.0 = message.0;
-                        m.1 = message.1;
-                        m.2 = message.2;
+                        m.clone_from(page);
 
                         m
                     })
