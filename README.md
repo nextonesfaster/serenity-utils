@@ -150,7 +150,7 @@ version = "0.3.0"
 default-features = false
 
 # Choose features you need.
-features = ["cache", "native_tls_backend]
+features = ["cache", "native_tls_backend"]
 ```
 
 ## License
