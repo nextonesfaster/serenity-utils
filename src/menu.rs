@@ -124,12 +124,12 @@ impl<'a> Menu<'a> {
     ///
     /// [`Error`]: .../struct.Error.html
     /// [`MenuOptions`]: struct.MenuOptions.html
-    pub async fn run(&mut self) -> Result<Option<Message>, Error> {
+    pub async fn run(mut self) -> Result<Option<Message>, Error> {
         loop {
             match self.work().await {
-                Ok((index, reaction)) => match &self.options.controls.get(index) {
+                Ok((index, reaction)) => match self.options.controls.get(index) {
                     Some(control) => {
-                        Arc::clone(&control.function)(self, reaction).await;
+                        Arc::clone(&control.function)(&mut self, reaction).await;
                     }
                     None => {
                         // We don't have to return an error for this as bot won't
@@ -145,7 +145,7 @@ impl<'a> Menu<'a> {
             }
         }
 
-        Ok(self.options.message.clone())
+        Ok(self.options.message)
     }
 
     async fn work(&mut self) -> Result<(usize, Reaction), Error> {
@@ -158,15 +158,14 @@ impl<'a> Menu<'a> {
         }
 
         let page = &self.pages[self.options.page];
-        match &self.options.message {
+        match &mut self.options.message {
             Some(m) => {
-                m.clone()
-                    .edit(&self.ctx.http, |m| {
-                        m.0 = page.to_edit_message().0;
+                m.edit(&self.ctx.http, |m| {
+                    m.0 = page.to_edit_message().0;
 
-                        m
-                    })
-                    .await?;
+                    m
+                })
+                .await?;
             }
             None => {
                 let msg = self
@@ -220,7 +219,7 @@ impl<'a> Menu<'a> {
 
     async fn add_reactions(&self, msg: &Message) -> MenuResult {
         for control in &self.options.controls {
-            msg.react(&self.ctx.http, control.emoji.clone()).await?;
+            self.ctx.http.create_reaction(msg.channel_id.0, msg.id.0, &control.emoji).await?;
         }
 
         Ok(())
@@ -389,7 +388,7 @@ pub type ControlFunction = Arc<
 ///
 /// [`ControlFunction`]: type.ControlFunction.html
 pub async fn next_page(menu: &mut Menu<'_>, reaction: Reaction) {
-    let _ = &reaction.delete(&menu.ctx.http).await;
+    let _ = reaction.delete(&menu.ctx.http).await;
 
     if menu.options.page == menu.pages.len() - 1 {
         menu.options.page = 0;
