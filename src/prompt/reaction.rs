@@ -90,9 +90,7 @@ pub async fn reaction_prompt(
     timeout: f32,
 ) -> Result<(usize, ReactionType), Error> {
     for emoji in emojis {
-        // `react(...)` needs ownership of the `emoji` and we need
-        // `emojis` later on, so the clone is required.
-        msg.react(&ctx.http, emoji.clone()).await?;
+        ctx.http.create_reaction(msg.channel_id.0, msg.id.0, &emoji).await?;
     }
 
     let mut collector = user
