@@ -16,7 +16,7 @@
 //! [`Red-DiscordBot`]: https://github.com/Cog-Creators/Red-DiscordBot/
 //! [`menu`]: https://github.com/Cog-Creators/Red-DiscordBot/blob/46eb9ce7a0bcded991af02665fec39fcb542c76d/redbot/core/utils/menus.py#L17
 
-use crate::{Error, misc::add_reactions};
+use crate::{misc::add_reactions, Error};
 use serenity::{
     builder::CreateMessage,
     collector::ReactionAction,
@@ -217,7 +217,12 @@ impl<'a> Menu<'a> {
 
     async fn add_reactions(&self, msg: &Message) -> MenuResult {
         if self.options.non_blocking {
-            let emojis = self.options.controls.iter().map(|c| c.emoji.clone()).collect::<Vec<_>>();
+            let emojis = self
+                .options
+                .controls
+                .iter()
+                .map(|c| c.emoji.clone())
+                .collect::<Vec<_>>();
 
             add_reactions(self.ctx, msg, emojis).await?;
         } else {
