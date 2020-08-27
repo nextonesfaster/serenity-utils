@@ -26,7 +26,6 @@ use serenity::{
     futures::StreamExt,
     model::prelude::{Message, ReactionType, User},
     prelude::Context,
-    Error as SerenityError,
 };
 use std::time::Duration;
 
