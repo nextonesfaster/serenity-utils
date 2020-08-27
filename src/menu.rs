@@ -16,7 +16,7 @@
 //! [`Red-DiscordBot`]: https://github.com/Cog-Creators/Red-DiscordBot/
 //! [`menu`]: https://github.com/Cog-Creators/Red-DiscordBot/blob/46eb9ce7a0bcded991af02665fec39fcb542c76d/redbot/core/utils/menus.py#L17
 
-use crate::Error;
+use crate::{Error, misc::add_reactions};
 use serenity::{
     builder::CreateMessage,
     collector::ReactionAction,
@@ -216,11 +216,19 @@ impl<'a> Menu<'a> {
     }
 
     async fn add_reactions(&self, msg: &Message) -> MenuResult {
-        for control in &self.options.controls {
-            self.ctx
-                .http
-                .create_reaction(msg.channel_id.0, msg.id.0, &control.emoji)
-                .await?;
+        if self.options.non_blocking {
+            let emojis = self.options.controls.iter().map(|c| c.emoji.clone()).collect::<Vec<_>>();
+
+            add_reactions(self.ctx, msg, emojis).await?;
+        } else {
+            // Using `add_reactions_blocking` requires extra iteration so we do
+            // it directly here.
+            for control in &self.options.controls {
+                self.ctx
+                    .http
+                    .create_reaction(msg.channel_id.0, msg.id.0, &control.emoji)
+                    .await?;
+            }
         }
 
         Ok(())
@@ -249,33 +257,50 @@ impl<'a> Menu<'a> {
 
 /// Options to tweak a menu.
 ///
-/// Default menu options are as follows:
-/// - page: 0
-/// - timeout: 30.0,
-/// - message: None,
-/// - controls: The default controls are:
-///     - ◀️ -> [`prev_page`]
-///     - ❌ -> [`close_menu`]
-///     - ▶️ -> [`next_page`]
-///
 /// See [`Control`] for details to implement your own controls.
 ///
-/// [`prev_page`]: fn.prev_page.html
-/// [`close_menu`]: fn.close_menu.html
-/// [`next_page`]: fn.next_page.html
 /// [`Control`]: struct.Control.html
 pub struct MenuOptions {
     /// The 0-indexed page number to start at.
+    ///
+    /// Defaults to `0`.
     pub page: usize,
     /// Number of seconds to keep the menu active.
+    ///
+    /// Defaults to `30.0`.
     pub timeout: f64,
     /// Optional message to edit.
     ///
     /// If supplied, this message is edited instead of the bot creating a new
     /// message to display the menu. This message must be sent by the bot.
+    ///
+    /// Defaults to `None`.
     pub message: Option<Message>,
     /// The controls for the menu.
+    ///
+    /// Defaults to the following:
+    /// - ◀️ -> [`prev_page`]
+    /// - ❌ -> [`close_menu`]
+    /// - ▶️ -> [`next_page`]
+    ///
+    /// [`prev_page`]: fn.prev_page.html
+    /// [`close_menu`]: fn.close_menu.html
+    /// [`next_page`]: fn.next_page.html
     pub controls: Vec<Control>,
+    /// Whether to add emojis in a separate task non-blocking task or not.
+    ///
+    /// If set to `true`, addition of emojis doesn't stop the menu from working.
+    /// That is, if a reaction is added to the menu message and the user reacts
+    /// to it before other reactions are added, the bot will consider that
+    /// reaction and act appropriately.
+    ///
+    /// If set to `false`, no user reactions will be considered until the bot
+    /// adds all reactions.
+    ///
+    /// Non-blocking addition is very slightly less efficient than blocking.
+    ///
+    /// Defaults to `true`.
+    pub non_blocking: bool,
 }
 
 impl MenuOptions {
@@ -285,12 +310,14 @@ impl MenuOptions {
         timeout: f64,
         message: Option<Message>,
         controls: Vec<Control>,
+        non_blocking: bool,
     ) -> Self {
         Self {
             page,
             timeout,
             message,
             controls,
+            non_blocking,
         }
     }
 }
@@ -308,6 +335,7 @@ impl Default for MenuOptions {
             timeout: 30.0,
             message: None,
             controls,
+            non_blocking: true,
         }
     }
 }
