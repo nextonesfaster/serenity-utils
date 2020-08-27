@@ -33,6 +33,7 @@ pub mod conversion;
 mod error;
 pub mod formatting;
 pub mod menu;
+pub mod misc;
 pub mod prelude;
 pub mod prompt;
 
