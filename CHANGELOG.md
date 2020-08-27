@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning][semver].
 
+## [0.4.0] - 2020-08-28
+
+### Added
+
+- `misc` module with `add_reactions` and `add_reactions_blocking` functions.
+- `non_blocking` field for `MenuOptions`.
+- [dependency] Add tokio.
+- Add tests.
+
+### Changed
+
+- Make `reaction_prompt` add reactions in a separate, non-blocking task.
+- Convert `examples` into a workspace.
+- Allow `Menu` to have reactions added in a non-blocking fashion.
+
 ## [0.3.0] - 2020-08-25
 
 ### Changed
@@ -31,3 +46,4 @@ This project adheres to [Semantic Versioning][semver].
 <!-- TAGS -->
 [0.2.0]: https://github.com/AriusX7/serenity-utils/compare/v0.1.0...v0.2.0
 [0.3.0]: https://github.com/AriusX7/serenity-utils/compare/v0.2.0...v0.3.0
+[0.4.0]: https://github.com/AriusX7/serenity-utils/compare/v0.3.0...v0.4.0
