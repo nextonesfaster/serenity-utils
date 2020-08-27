@@ -32,16 +32,12 @@ fn test_to_create_embed() {
     let mut builder = EmbedBuilder::new();
     builder
         .set_description("This is the embed description.")
-        .set_author_with(|a| {
-            a.set_name("The embed author name!")
-        });
+        .set_author_with(|a| a.set_name("The embed author name!"));
 
     let mut create_embed = CreateEmbed::default();
     create_embed
         .description("This is the embed description.")
-        .author(|a| {
-            a.name("The embed author name!")
-        });
+        .author(|a| a.name("The embed author name!"));
 
     assert_eq!(builder.to_create_embed().0, create_embed.0);
 }
@@ -61,10 +57,7 @@ fn test_to_create_message() {
 
             e
         })
-        .add_reactions(vec![
-            ReactionType::from('🐶'),
-            ReactionType::from('🐱'),
-        ]);
+        .add_reactions(vec![ReactionType::from('🐶'), ReactionType::from('🐱')]);
 
     let transformed_create_message = builder.to_create_message();
 
@@ -81,10 +74,7 @@ fn test_to_create_message() {
 
             e
         })
-        .reactions(vec![
-            ReactionType::from('🐶'),
-            ReactionType::from('🐱'),
-        ]);
+        .reactions(vec![ReactionType::from('🐶'), ReactionType::from('🐱')]);
 
     assert_eq!(transformed_create_message.0, create_message.0);
     assert_eq!(transformed_create_message.1, create_message.1);
@@ -105,10 +95,7 @@ fn test_to_edit_message() {
 
             e
         })
-        .add_reactions(vec![
-            ReactionType::from('🐶'),
-            ReactionType::from('🐱'),
-        ]);
+        .add_reactions(vec![ReactionType::from('🐶'), ReactionType::from('🐱')]);
 
     let mut edit_message = EditMessage::default();
     edit_message
