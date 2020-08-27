@@ -19,7 +19,7 @@ To use this crate, add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-serenity_utils = "0.3.0"
+serenity_utils = "0.4.0"
 ```
 
 **Note:** This crate only supports [serenity]'s async versions and a minimum of Rust 1.39.
@@ -144,7 +144,7 @@ You can specify features by adding this to your `Cargo.toml`:
 
 ```toml
 [dependencies.serenity_utils]
-version = "0.3.0"
+version = "0.4.0"
 
 # To disable default features.
 default-features = false
