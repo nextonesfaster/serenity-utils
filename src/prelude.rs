@@ -14,4 +14,5 @@ pub use super::builder::prelude::{EmbedBuilder, MessageBuilder};
 pub use super::conversion::Conversion;
 pub use super::formatting::{pagify, PagifyOptions};
 pub use super::menu::{Menu, MenuOptions};
+pub use super::misc::*;
 pub use super::prompt::*;
