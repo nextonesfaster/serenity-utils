@@ -20,12 +20,13 @@
 //! }
 //! ```
 
-use crate::error::Error;
+use crate::{error::Error, misc::add_reactions};
 use serenity::{
     collector::ReactionAction,
     futures::StreamExt,
     model::prelude::{Message, ReactionType, User},
     prelude::Context,
+    Error as SerenityError,
 };
 use std::time::Duration;
 
@@ -89,11 +90,7 @@ pub async fn reaction_prompt(
     emojis: &[ReactionType],
     timeout: f32,
 ) -> Result<(usize, ReactionType), Error> {
-    for emoji in emojis {
-        ctx.http
-            .create_reaction(msg.channel_id.0, msg.id.0, &emoji)
-            .await?;
-    }
+    add_reactions(ctx, msg, emojis.to_vec()).await?;
 
     let mut collector = user
         .await_reactions(&ctx)
