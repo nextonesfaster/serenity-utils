@@ -16,7 +16,11 @@ use serenity::{
 /// function is slightly less efficient than the blocking counterpart.
 ///
 /// [`add_reactions_blocking`]: fn.add_reactions_blocking.html
-pub async fn add_reactions(ctx: &Context, msg: &Message, emojis: Vec<ReactionType>) -> Result<(), Error> {
+pub async fn add_reactions(
+    ctx: &Context,
+    msg: &Message,
+    emojis: Vec<ReactionType>,
+) -> Result<(), Error> {
     let channel_id = msg.channel_id;
     let msg_id = msg.id;
     let http = ctx.http.clone();
@@ -40,9 +44,15 @@ pub async fn add_reactions(ctx: &Context, msg: &Message, emojis: Vec<ReactionTyp
 /// See [`add_reactions`] to add reactions in a non-blocking fashion.
 ///
 /// [`add_reactions`]: fn.add_reactions.html
-pub async fn add_reactions_blocking(ctx: &Context, msg: &Message, emojis: &[ReactionType]) -> Result<(), Error> {
+pub async fn add_reactions_blocking(
+    ctx: &Context,
+    msg: &Message,
+    emojis: &[ReactionType],
+) -> Result<(), Error> {
     for emoji in emojis {
-        ctx.http.create_reaction(msg.channel_id.0, msg.id.0, emoji).await?;
+        ctx.http
+            .create_reaction(msg.channel_id.0, msg.id.0, emoji)
+            .await?;
     }
 
     Ok(())
