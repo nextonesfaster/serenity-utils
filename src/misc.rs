@@ -4,6 +4,7 @@ use crate::Error;
 use serenity::{
     model::prelude::{Message, ReactionType},
     prelude::Context,
+    Error as SerenityError,
 };
 
 /// Adds reactions in a non-blocking fashion.
@@ -19,7 +20,7 @@ use serenity::{
 pub async fn add_reactions(ctx: &Context, msg: &Message, emojis: Vec<ReactionType>) -> Result<(), Error> {
     let channel_id = msg.channel_id;
     let msg_id = msg.id;
-    let http = self.ctx.http.clone();
+    let http = ctx.http.clone();
 
     tokio::spawn(async move {
         for emoji in emojis {
