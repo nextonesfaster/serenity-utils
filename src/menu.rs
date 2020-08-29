@@ -114,17 +114,27 @@ impl<'a> Menu<'a> {
     /// It returns the message used to display the reaction menu after running.
     ///
     /// ## Errors
-    /// Returns [`Error`] in these scenarios:
-    /// - Current user/bot doesn't have the permissions to add reactions.
-    /// - `msg` is specified in [`MenuOptions`] but the current user/bot isn't
-    ///     the author of the message.
-    /// - The message content lengths are over Discord's limit.
-    /// - Current user/bot doesn't have the permissions to send an message/embed.
-    /// - If `pages` is empty.
-    /// - If the page number specified in [`MenuOptions`] is out of bounds.
     ///
-    /// [`Error`]: .../struct.Error.html
+    /// Returns [`Error::SerenityError`] if
+    /// - current user/bot doesn't have the permissions to add reactions
+    /// - `msg` is specified in [`MenuOptions`] but the current user/bot isn't
+    ///     the author of the message
+    /// - the message content lengths are over Discord's limit
+    /// - current user/bot doesn't have the permissions to send an message/embed
+    ///
+    ///
+    /// Returns `[Error::InvalidChoice`] if the user selects an invalid choice, ie, reacts to an
+    /// emoji that does not correspond to any [`control`].
+    ///
+    /// Returns [`Error::Other`] if
+    /// - `pages` is empty
+    /// - the page number specified in [`MenuOptions`] is out of bounds
+    ///
+    /// [`Error::SerenityError`]: .../enum.Error.html#variant.SerenityError
+    /// [`Error::InvalidChoice`]: .../enum.Error.html#variant.InvalidChoice
+    /// [`Error::Other`]: .../enum.Error.html#variant.Other
     /// [`MenuOptions`]: struct.MenuOptions.html
+    /// [`control`]: struct.Control.html
     pub async fn run(mut self) -> Result<Option<Message>, Error> {
         loop {
             match self.work().await {
@@ -137,11 +147,18 @@ impl<'a> Menu<'a> {
                         // have permission to remove reactions in all cases. This
                         // is simply an inconvenience for the user.
                         let _ = self.clean_reactions().await;
+                        break;
                     }
                 },
-                Err(_) => {
+                Err(e) => {
                     self.clean_reactions().await?;
-                    break;
+
+                    // Timeout error isn't a valid error for the reaction menu.
+                    if let Error::TimeoutError = e {
+                        break;
+                    } else {
+                        return Err(e);
+                    }
                 }
             }
         }
@@ -195,9 +212,12 @@ impl<'a> Menu<'a> {
         let (choice, reaction) = {
             let mut choice = None;
             let mut reaction = None;
+            let mut found_one = false;
 
             while let Some(item) = reaction_collector.next().await {
                 if let ReactionAction::Added(r) = item.as_ref() {
+                    if !found_one { found_one = true; }
+
                     let r = r.as_ref().clone();
                     if let Some(i) = self.process_reaction(&r) {
                         choice = Some(i);
@@ -206,12 +226,17 @@ impl<'a> Menu<'a> {
                     }
                 }
             }
+
+            if !found_one {
+                return Err(Error::TimeoutError);
+            }
+
             (choice, reaction)
         };
 
         match choice {
             Some(c) => Ok((c, reaction.unwrap())),
-            None => Err(Error::from("Invalid choice, closing menu.")),
+            None => Err(Error::InvalidChoice),
         }
     }
 
