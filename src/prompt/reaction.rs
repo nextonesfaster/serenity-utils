@@ -76,12 +76,14 @@ use std::time::Duration;
 /// ```
 ///
 /// ## Errors
-/// Returns serenity's `ModelError::InvalidPermissions` if cache is enabled and
-/// the current user does not have the required permissions to add reactions.
 ///
-/// Returns [`Error`] if user does not react at all.
+/// Returns [`Error::SerenityError`] if cache is enabled and the current
+/// user does not have the required permissions to add reactions.
 ///
-/// [`Error`]: ../error/struct.Error.html
+/// Returns [`Error::TimeoutError`] if user does not react at all.
+///
+/// [`Error::SerenityError`]: ../error/enum.Error.html#variant.SerenityError
+/// [`Error::TimeoutError`]: ../error/enum.Error.html#variant.TimeoutError
 pub async fn reaction_prompt(
     ctx: &Context,
     msg: &Message,
@@ -108,7 +110,7 @@ pub async fn reaction_prompt(
         }
     }
 
-    Err(Error::from("User did not select a reaction."))
+    Err(Error::TimeoutError)
 }
 
 /// A special reaction prompt to check if user reacts with yes or no.
@@ -151,6 +153,7 @@ pub async fn reaction_prompt(
 /// ```
 ///
 /// ## Errors
+///
 /// It can return the same errors as [`reaction_prompt`].
 ///
 /// [`reaction_prompt`]: fn.reaction_prompt.html
