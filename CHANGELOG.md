@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning][semver].
 
+## [0.5.0] - 2020-08-31
+
+### Changed
+
+- Convert `Error` into an enum.
+- [documentation] Add info about return error types.
+
 ## [0.4.0] - 2020-08-28
 
 ### Added
@@ -47,3 +54,4 @@ This project adheres to [Semantic Versioning][semver].
 [0.2.0]: https://github.com/AriusX7/serenity-utils/compare/v0.1.0...v0.2.0
 [0.3.0]: https://github.com/AriusX7/serenity-utils/compare/v0.2.0...v0.3.0
 [0.4.0]: https://github.com/AriusX7/serenity-utils/compare/v0.3.0...v0.4.0
+[0.5.0]: https://github.com/AriusX7/serenity-utils/compare/v0.4.0...v0.5.0
