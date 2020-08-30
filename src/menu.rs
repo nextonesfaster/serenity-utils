@@ -123,7 +123,7 @@ impl<'a> Menu<'a> {
     /// - current user/bot doesn't have the permissions to send an message/embed
     ///
     ///
-    /// Returns `[Error::InvalidChoice`] if the user selects an invalid choice, ie, reacts to an
+    /// Returns [`Error::InvalidChoice`] if the user selects an invalid choice, ie, reacts to an
     /// emoji that does not correspond to any [`control`].
     ///
     /// Returns [`Error::Other`] if
