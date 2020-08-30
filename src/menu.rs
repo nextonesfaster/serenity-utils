@@ -434,7 +434,7 @@ pub type ControlFunction = Arc<
 /// Moves a reaction menu forward.
 ///
 /// **Note:** This function is not a [`ControlFunction`]. To turn it into a
-/// control function, it must pin it and then create an `Arc` of it.
+/// control function, you must pin it and then create an `Arc` of it.
 ///
 /// ```
 /// # use serenity_utils::menu::next_page;
@@ -459,7 +459,7 @@ pub async fn next_page(menu: &mut Menu<'_>, reaction: Reaction) {
 /// Moves a reaction menu backward.
 ///
 /// **Note:** This function is not a [`ControlFunction`]. To turn it into a
-/// control function, it must pin it and then create an `Arc` of it.
+/// control function, you must pin it and then create an `Arc` of it.
 ///
 /// ```
 /// # use serenity_utils::menu::prev_page;
@@ -484,7 +484,7 @@ pub async fn prev_page(menu: &mut Menu<'_>, reaction: Reaction) {
 /// Closes a reaction menu by deleting the menu's message.
 ///
 /// **Note:** This function is not a [`ControlFunction`]. To turn it into a
-/// control function, it must pin it and then create an `Arc` of it.
+/// control function, you must pin it and then create an `Arc` of it.
 ///
 /// ```
 /// # use serenity_utils::menu::close_menu;
