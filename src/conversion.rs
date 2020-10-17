@@ -120,6 +120,7 @@ impl Conversion for Role {
     type Item = Self;
 
     /// Converts `arg` into a `Role` object.
+    #[cfg(feature = "cache")]
     async fn from_guild_and_str(guild: &Guild, arg: &str) -> Option<Self>
     where
         Self: Sized,
@@ -164,6 +165,7 @@ impl Conversion for Member {
     type Item = Self;
 
     /// Converts `arg` into a `Member` object.
+    #[cfg(feature = "cache")]
     async fn from_guild_and_str(guild: &Guild, arg: &str) -> Option<Self>
     where
         Self: Sized,
@@ -206,6 +208,7 @@ impl Conversion for GuildChannel {
     type Item = Self;
 
     /// Converts `arg` into a `GuildChannel` object.
+    #[cfg(feature = "cache")]
     async fn from_guild_and_str(guild: &Guild, arg: &str) -> Option<Self>
     where
         Self: Sized,
