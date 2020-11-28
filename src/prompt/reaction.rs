@@ -82,8 +82,8 @@ use std::time::Duration;
 ///
 /// Returns [`Error::TimeoutError`] if user does not react at all.
 ///
-/// [`Error::SerenityError`]: ../error/enum.Error.html#variant.SerenityError
-/// [`Error::TimeoutError`]: ../error/enum.Error.html#variant.TimeoutError
+/// [`Error::SerenityError`]: crate::error::Error::SerenityError
+/// [`Error::TimeoutError`]: crate::error::Error::TimeoutError
 pub async fn reaction_prompt(
     ctx: &Context,
     msg: &Message,
@@ -156,7 +156,7 @@ pub async fn reaction_prompt(
 ///
 /// It can return the same errors as [`reaction_prompt`].
 ///
-/// [`reaction_prompt`]: fn.reaction_prompt.html
+/// [`reaction_prompt`]: reaction_prompt()
 pub async fn yes_or_no_prompt(
     ctx: &Context,
     msg: &Message,

@@ -7,7 +7,7 @@ use std::{
 
 /// A common error type for all functions and methods of the library.
 ///
-/// It can be directly converted into serenity's `Error`.
+/// It can be directly converted into serenity's [`Error`](SerenityError).
 #[derive(Debug)]
 pub enum Error {
     /// Error returned by serenity.
@@ -17,7 +17,7 @@ pub enum Error {
     /// Error returned when user's choice is invalid.
     InvalidChoice,
     /// Error returned for all other cases.
-    Other(String)
+    Other(String),
 }
 
 impl StdError for Error {}

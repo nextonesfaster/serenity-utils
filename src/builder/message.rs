@@ -1,7 +1,7 @@
 //! Provides alternative to serenity's message builder.
 //!
 //! Unlike serenity's builder, the builder here uses separate fields for all
-//! values instead of a `HashMap`. This provides an easy way to access the
+//! values instead of a [`HashMap`]. This provides an easy way to access the
 //! builder's fields.
 //!
 //! Due to the user-friendliness of this builder, it is slightly less efficient
@@ -27,6 +27,8 @@
 //! ```
 //!
 //! Other builders can be used in a similar fashion.
+//!
+//! [`HashMap`]: std::collections::HashMap
 
 use super::embed::EmbedBuilder;
 use serenity::{
@@ -37,9 +39,9 @@ use serenity::{
 
 /// A struct to build a message.
 ///
-/// It is meant to serve as an alternative to serenity's `CreateMessage`.
+/// It is meant to serve as an alternative to serenity's [`CreateMessage`].
 /// Unlike serenity's builder, this builder uses separate fields for all values
-/// instead of a `HashMap`. This provides an easy way to access the builder's
+/// instead of a [`HashMap`]. This provides an easy way to access the builder's
 /// fields.
 ///
 /// All fields have setter methods like serenity's builder to allow you to pass
@@ -59,6 +61,8 @@ use serenity::{
 /// message.content = Some("content".to_string());
 /// message.tts = true;
 /// ```
+/// 
+/// [`HashMap`]: std::collections::HashMap
 #[derive(Clone, Debug, Default)]
 pub struct MessageBuilder<'a> {
     /// The content of the message.
@@ -80,8 +84,6 @@ impl<'a> MessageBuilder<'a> {
     ///
     /// All fields are set to `None` or empty vectors. They can be changed by
     /// mutating the struct directly or by using the setter methods.
-    ///
-    /// [`MessageBuilder`]: struct.MessageBuilder.html
     pub fn new() -> Self {
         Self::default()
     }
@@ -122,7 +124,7 @@ impl<'a> MessageBuilder<'a> {
     /// });
     /// ```
     ///
-    /// [`EmbedBuilder`]: ../embed/struct.EmbedBuilder.html
+    /// [`EmbedBuilder`]: super::embed::EmbedBuilder
     pub fn set_embed_with<F>(&mut self, f: F) -> &mut Self
     where
         F: FnOnce(&mut EmbedBuilder) -> &mut EmbedBuilder,
@@ -220,19 +222,15 @@ impl<'a> MessageBuilder<'a> {
         self
     }
 
-    /// Converts [`MessageBuilder`] into serenity's `CreateMessage`.
-    ///
-    /// [`MessageBuilder`]: struct.MessageBuilder.html
+    /// Converts [`MessageBuilder`] into serenity's [`CreateMessage`].
     pub fn to_create_message(&self) -> CreateMessage {
         self.into()
     }
 
-    /// Converts [`MessageBuilder`] into serenity's `EditMessage`.
+    /// Converts [`MessageBuilder`] into serenity's [`EditMessage`].
     ///
-    /// The resultant `EditMessage` only has content and embed — all other
+    /// The resultant [`EditMessage`] only has content and embed — all other
     /// fields are ignored.
-    ///
-    /// [`MessageBuilder`]: struct.MessageBuilder.html
     pub fn to_edit_message(&self) -> EditMessage {
         self.into()
     }

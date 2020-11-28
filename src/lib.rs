@@ -26,7 +26,7 @@
 //! library can be found in the [`examples`] directory.
 //!
 //! [`serenity`]: https://github.com/serenity-rs/serenity
-//! [`examples`]: https://github.com/AriusX7/serenity_utils/tree/master/examples
+//! [`examples`]: https://github.com/AriusX7/serenity-utils/tree/current/examples
 
 pub mod builder;
 pub mod conversion;

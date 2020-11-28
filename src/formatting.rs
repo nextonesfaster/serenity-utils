@@ -49,7 +49,7 @@ pub struct PagifyOptions<'a> {
 }
 
 impl<'a> PagifyOptions<'a> {
-    /// Creates a [`PagifyOptions`](struct.PagifyOptions.html) object with default values.
+    /// Creates a [`PagifyOptions`] object with default values.
     pub fn new() -> Self {
         Self::default()
     }
@@ -159,7 +159,6 @@ impl<'a> Default for PagifyOptions<'a> {
 ///
 /// This is ported from [`Red-DiscordBot's pagify`] function.
 ///
-/// [`PagifyOptions`]: struct.PagifyOptions.html
 /// [`Red-DiscordBot's pagify`]: https://github.com/Cog-Creators/Red-DiscordBot/blob/V3/develop/redbot/core/utils/chat_formatting.py#L212
 pub fn pagify<S: ToString>(text: S, mut options: PagifyOptions<'_>) -> Vec<String> {
     let text = text.to_string();

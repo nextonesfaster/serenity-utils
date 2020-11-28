@@ -12,7 +12,7 @@
 //! **Note:** This functionality has been ported from [`Red-DiscordBot`]'s
 //! [`menu`] function.
 //!
-//! [`Menu`]: struct.Menu.html
+//! [`Menu`]: Menu
 //! [`Red-DiscordBot`]: https://github.com/Cog-Creators/Red-DiscordBot/
 //! [`menu`]: https://github.com/Cog-Creators/Red-DiscordBot/blob/46eb9ce7a0bcded991af02665fec39fcb542c76d/redbot/core/utils/menus.py#L17
 
@@ -80,8 +80,6 @@ pub type MenuResult = Result<(), Error>;
 ///
 /// A reaction menu can be configured by changing its options. See
 /// [`MenuOptions`] for more details.
-///
-/// [`MenuOptions`]: struct.MenuOptions.html
 pub struct Menu<'a> {
     /// The Discord/serenity context.
     pub ctx: &'a Context,
@@ -94,7 +92,7 @@ pub struct Menu<'a> {
 }
 
 impl<'a> Menu<'a> {
-    /// Creates a new [`Menu`](struct.Menu.html) object.
+    /// Creates a new [`Menu`] object.
     pub fn new(
         ctx: &'a Context,
         msg: &'a Message,
@@ -122,7 +120,6 @@ impl<'a> Menu<'a> {
     /// - the message content lengths are over Discord's limit
     /// - current user/bot doesn't have the permissions to send an message/embed
     ///
-    ///
     /// Returns [`Error::InvalidChoice`] if the user selects an invalid choice, ie, reacts to an
     /// emoji that does not correspond to any [`control`].
     ///
@@ -130,11 +127,10 @@ impl<'a> Menu<'a> {
     /// - `pages` is empty
     /// - the page number specified in [`MenuOptions`] is out of bounds
     ///
-    /// [`Error::SerenityError`]: .../enum.Error.html#variant.SerenityError
-    /// [`Error::InvalidChoice`]: .../enum.Error.html#variant.InvalidChoice
-    /// [`Error::Other`]: .../enum.Error.html#variant.Other
-    /// [`MenuOptions`]: struct.MenuOptions.html
-    /// [`control`]: struct.Control.html
+    /// [`Error::SerenityError`]: crate::error::Error::SerenityError
+    /// [`Error::InvalidChoice`]: crate::error::Error::InvalidChoice
+    /// [`Error::Other`]: crate::error::Error::Other
+    /// [`control`]: Control
     pub async fn run(mut self) -> Result<Option<Message>, Error> {
         loop {
             match self.work().await {
@@ -216,7 +212,9 @@ impl<'a> Menu<'a> {
 
             while let Some(item) = reaction_collector.next().await {
                 if let ReactionAction::Added(r) = item.as_ref() {
-                    if !found_one { found_one = true; }
+                    if !found_one {
+                        found_one = true;
+                    }
 
                     let r = r.as_ref().clone();
                     if let Some(i) = self.process_reaction(&r) {
@@ -288,8 +286,6 @@ impl<'a> Menu<'a> {
 /// Options to tweak a menu.
 ///
 /// See [`Control`] for details to implement your own controls.
-///
-/// [`Control`]: struct.Control.html
 pub struct MenuOptions {
     /// The 0-indexed page number to start at.
     ///
@@ -313,9 +309,9 @@ pub struct MenuOptions {
     /// - ❌ -> [`close_menu`]
     /// - ▶️ -> [`next_page`]
     ///
-    /// [`prev_page`]: fn.prev_page.html
-    /// [`close_menu`]: fn.close_menu.html
-    /// [`next_page`]: fn.next_page.html
+    /// [`prev_page`]: prev_page()
+    /// [`close_menu`]: close_menu()
+    /// [`next_page`]: next_page()
     pub controls: Vec<Control>,
     /// Whether to add emojis in a separate task non-blocking task or not.
     ///
@@ -334,7 +330,7 @@ pub struct MenuOptions {
 }
 
 impl MenuOptions {
-    /// Creates a new [`MenuOptions`](struct.MenuOptions.html) object.
+    /// Creates a new [`MenuOptions`] object.
     pub fn new(
         page: usize,
         timeout: f64,
@@ -375,17 +371,15 @@ impl Default for MenuOptions {
 /// Each control must have a unique emoji and a function to control it's
 /// behaviour. See [`ControlFunction`]'s documentation to learn more about how
 /// they are implemented.
-///
-/// [`ControlFunction`]: type.ControlFunction.html
 pub struct Control {
     /// The emoji for the control.
     pub emoji: ReactionType,
-    /// The [`ControlFunction`](type.ControlFunction.html) to control the behaviour.
+    /// The [`ControlFunction`] to control the behaviour.
     pub function: ControlFunction,
 }
 
 impl Control {
-    /// Creates a new [`Control`](struct.Control.html) object.
+    /// Creates a new [`Control`] object.
     pub fn new(emoji: ReactionType, function: ControlFunction) -> Self {
         Self { emoji, function }
     }
@@ -423,8 +417,6 @@ impl Control {
 /// ```
 ///
 /// Now, `control_function` can be used to control a menu.
-///
-/// [`ControlFunction`]: type.ControlFunction.html
 pub type ControlFunction = Arc<
     dyn for<'b> Fn(&'b mut Menu<'_>, Reaction) -> Pin<Box<dyn Future<Output = ()> + 'b + Send>>
         + Sync
@@ -444,8 +436,6 @@ pub type ControlFunction = Arc<
 /// ```
 ///
 /// `next_page_cfn` is a [`ControlFunction`] and can be used to control a menu.
-///
-/// [`ControlFunction`]: type.ControlFunction.html
 pub async fn next_page(menu: &mut Menu<'_>, reaction: Reaction) {
     let _ = reaction.delete(&menu.ctx.http).await;
 
@@ -469,8 +459,6 @@ pub async fn next_page(menu: &mut Menu<'_>, reaction: Reaction) {
 /// ```
 ///
 /// `prev_page_cfn` is a [`ControlFunction`] and can be used to control a menu.
-///
-/// [`ControlFunction`]: type.ControlFunction.html
 pub async fn prev_page(menu: &mut Menu<'_>, reaction: Reaction) {
     let _ = reaction.delete(&menu.ctx.http).await;
 
@@ -494,8 +482,6 @@ pub async fn prev_page(menu: &mut Menu<'_>, reaction: Reaction) {
 /// ```
 ///
 /// `close_menu_cfn` is a [`ControlFunction`] and can be used to control a menu.
-///
-/// [`ControlFunction`]: type.ControlFunction.html
 pub async fn close_menu(menu: &mut Menu<'_>, _reaction: Reaction) {
     let _ = menu
         .options

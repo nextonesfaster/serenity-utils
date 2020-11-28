@@ -54,7 +54,7 @@ use std::time::Duration;
 ///
 /// See [`message_prompt_content`] if you only need the message's content.
 ///
-/// [`message_prompt_content`]: fn.message_prompt_content.html
+/// [`message_prompt_content`]: message_prompt_content()
 pub async fn message_prompt(
     ctx: &Context,
     msg: &Message,
@@ -96,7 +96,7 @@ pub async fn message_prompt(
 ///
 /// See [`message_prompt`] if you need the whole message object.
 ///
-/// [`message_prompt`]: fn.message_prompt.html
+/// [`message_prompt`]: message_prompt()
 pub async fn message_prompt_content(
     ctx: &Context,
     msg: &Message,

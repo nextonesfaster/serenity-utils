@@ -54,9 +54,8 @@
 //! }
 //! ```
 //!
-//! [`Conversion`]: trait.Conversion.html
-//! [`from_guild_and_str`]: trait.Conversion.html#tymethod.from_guild_and_str
-//! [`from_guild_id_and_str`]: trait.Conversion.html#tymethod.from_guild_id_and_str
+//! [`from_guild_and_str`]: Conversion::from_guild_and_str
+//! [`from_guild_id_and_str`]: Conversion::from_guild_id_and_str
 
 use serenity::{async_trait, model::prelude::*, prelude::Context, utils::parse_mention};
 use std::collections::HashMap;
@@ -78,13 +77,13 @@ use std::collections::HashMap;
 ///     extracted ID.
 /// - Treating argument as model's name.
 ///
-/// **Note:** For `Member`, nickname and user tag are considered along
+/// **Note:** For [`Member`], nickname and user tag are considered along
 /// with the user name.
 ///
 /// ## Limitation
 ///
 /// If the `cache` feature is not enabled, an argument is only treated as an ID
-/// or mention when trying to convert to `Member`. It is not treated as user
+/// or mention when trying to convert to [`Member`]. It is not treated as user
 /// name, nickname or tag.
 ///
 /// ## Implementation
@@ -93,8 +92,8 @@ use std::collections::HashMap;
 /// [`from_guild_and_str`] and [`from_guild_id_and_str`] methods.
 /// The strategy you use may depend on your model.
 ///
-/// [`from_guild_and_str`]: trait.Conversion.html#tymethod.from_guild_and_str
-/// [`from_guild_id_and_str`]: trait.Conversion.html#tymethod.from_guild_id_and_str
+/// [`from_guild_and_str`]: Conversion::from_guild_and_str
+/// [`from_guild_id_and_str`]: Conversion::from_guild_id_and_str
 #[async_trait]
 pub trait Conversion {
     /// The type of the model to convert to.
@@ -119,7 +118,7 @@ pub trait Conversion {
 impl Conversion for Role {
     type Item = Self;
 
-    /// Converts `arg` into a `Role` object.
+    /// Converts `arg` into a [`Role`] object.
     #[cfg(feature = "cache")]
     async fn from_guild_and_str(guild: &Guild, arg: &str) -> Option<Self>
     where
@@ -164,7 +163,7 @@ impl Conversion for Role {
 impl Conversion for Member {
     type Item = Self;
 
-    /// Converts `arg` into a `Member` object.
+    /// Converts `arg` into a [`Member`] object.
     #[cfg(feature = "cache")]
     async fn from_guild_and_str(guild: &Guild, arg: &str) -> Option<Self>
     where
@@ -207,7 +206,7 @@ impl Conversion for Member {
 impl Conversion for GuildChannel {
     type Item = Self;
 
-    /// Converts `arg` into a `GuildChannel` object.
+    /// Converts `arg` into a [`GuildChannel`] object.
     #[cfg(feature = "cache")]
     async fn from_guild_and_str(guild: &Guild, arg: &str) -> Option<Self>
     where

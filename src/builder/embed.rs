@@ -1,7 +1,7 @@
 //! Provides alternatives to serenity's embed builders.
 //!
 //! Unlike serenity's builders, the builders here use separate fields for all
-//! values instead of a `HashMap`. This provides an easy way to access the
+//! values instead of a [`HashMap`]. This provides an easy way to access the
 //! builder's fields.
 //!
 //! Due to the user-friendliness of these builders, they are slightly less
@@ -27,6 +27,8 @@
 //! ```
 //!
 //! Other builders can be used in a similar fashion.
+//!
+//! [`HashMap`]: std::collections::HashMap
 
 use serenity::{
     builder::{CreateEmbed, CreateEmbedAuthor, CreateEmbedFooter, Timestamp},
@@ -36,9 +38,9 @@ use serenity::{
 
 /// A struct to build the author portion of an embed.
 ///
-/// It is meant to serve as an alternative to serenity's `CreateEmbedAuthor`.
+/// It is meant to serve as an alternative to serenity's [`CreateEmbedAuthor`].
 /// Unlike serenity's builder, this builder uses separate fields for all values
-/// instead of a `HashMap`. This provides an easy way to access the builder's
+/// instead of a [`HashMap`]. This provides an easy way to access the builder's
 /// fields.
 ///
 /// All fields have setter methods like serenity's builder to allow you to pass
@@ -59,6 +61,8 @@ use serenity::{
 /// // Or by directly mutating the struct.
 /// author.icon_url = Some("icon_url".to_string());
 /// ```
+///
+/// [`HashMap`]: std::collections::HashMap
 #[derive(Clone, Debug)]
 pub struct EmbedAuthorBuilder {
     /// The icon URL of the author. This only supports HTTP(S).
@@ -75,8 +79,6 @@ impl EmbedAuthorBuilder {
     /// `name` must be specified when creating as it cannot be empty. Other
     /// fields are optional and be specified by directly mutating the struct
     /// or using one of the setters.
-    ///
-    /// [`EmbedAuthorBuilder`]: struct.EmbedAuthorBuilder.html
     pub fn new<S: ToString>(name: S) -> Self {
         Self {
             icon_url: None,
@@ -106,9 +108,7 @@ impl EmbedAuthorBuilder {
         self
     }
 
-    /// Converts [`EmbedAuthorBuilder`] into serenity's `CreateEmbedAuthor`.
-    ///
-    /// [`EmbedAuthorBuilder`]: struct.EmbedAuthorBuilder.html
+    /// Converts [`EmbedAuthorBuilder`] into serenity's [`CreateEmbedAuthor`].
     pub fn to_create_embed_author(&self) -> CreateEmbedAuthor {
         self.into()
     }
@@ -152,9 +152,9 @@ impl From<&EmbedAuthorBuilder> for CreateEmbedAuthor {
 
 /// A struct to build the footer portion of an embed.
 ///
-/// It is meant to serve as an alternative to serenity's `CreateEmbedFooter`.
+/// It is meant to serve as an alternative to serenity's [`CreateEmbedFooter`].
 /// Unlike serenity's builder, this builder uses separate fields for all values
-/// instead of a `HashMap`. This provides an easy way to access the builder's
+/// instead of a [`HashMap`]. This provides an easy way to access the builder's
 /// fields.
 ///
 /// All fields have setter methods like serenity's builder to allow you to pass
@@ -175,6 +175,8 @@ impl From<&EmbedAuthorBuilder> for CreateEmbedAuthor {
 /// // Or by directly mutating the struct.
 /// footer.icon_url = Some("icon_url".to_string());
 /// ```
+/// 
+/// [`HashMap`]: std::collections::HashMap
 #[derive(Clone, Debug)]
 pub struct EmbedFooterBuilder {
     /// The icon url of the footer. This only supports HTTP(S).
@@ -189,8 +191,6 @@ impl EmbedFooterBuilder {
     /// `text` must be specified when creating as it cannot be empty. Other
     /// fields are optional and be specified by directly mutating the struct
     /// or using one of the setters.
-    ///
-    /// [`EmbedFooterBuilder`]: struct.EmbedFooterBuilder.html
     pub fn new<S: ToString>(text: S) -> Self {
         Self {
             icon_url: None,
@@ -212,9 +212,7 @@ impl EmbedFooterBuilder {
         self
     }
 
-    /// Converts [`EmbedFooterBuilder`] into serenity's `CreateEmbedFooter`.
-    ///
-    /// [`EmbedFooterBuilder`]: struct.EmbedFooterBuilder.html
+    /// Converts [`EmbedFooterBuilder`] into serenity's [`CreateEmbedFooter`].
     pub fn to_create_embed_footer(&self) -> CreateEmbedFooter {
         self.into()
     }
@@ -285,8 +283,6 @@ pub struct EmbedFieldBuilder {
 
 impl EmbedFieldBuilder {
     /// Creates a new [`EmbedFieldBuilder`] object.
-    ///
-    /// [`EmbedFieldBuilder`]: struct.EmbedFieldBuilder.html
     pub fn new<T: ToString, U: ToString>(name: T, value: U, inline: bool) -> Self {
         Self {
             name: name.to_string(),
@@ -320,8 +316,7 @@ impl EmbedFieldBuilder {
     ///
     /// See [`EmbedBuilder::add_field`] method to add a field to [`EmbedBuilder`].
     ///
-    /// [`EmbedBuilder`]: struct.EmbedBuilder.html
-    /// [`EmbedBuilder::add_field`]: struct.EmbedBuilder.html#method.add_field
+    /// [`EmbedBuilder::add_field`]: EmbedBuilder::add_field()
     pub fn insert_to(self, embed: &mut CreateEmbed) -> &mut CreateEmbed {
         embed.field(self.name, self.value, self.inline)
     }
@@ -341,9 +336,9 @@ impl From<&EmbedFieldBuilder> for EmbedField {
 
 /// A struct to build an embed.
 ///
-/// It is meant to serve as an alternative to serenity's `CreateEmbed`.
+/// It is meant to serve as an alternative to serenity's [`CreateEmbed`].
 /// Unlike serenity's builder, this builder uses separate fields for all values
-/// instead of a `HashMap`. This provides an easy way to access the builder's
+/// instead of a [`HashMap`]. This provides an easy way to access the builder's
 /// fields.
 ///
 /// All fields have setter methods like serenity's builder to allow you to pass
@@ -363,6 +358,8 @@ impl From<&EmbedFieldBuilder> for EmbedField {
 /// embed.description = Some("description".to_string());
 /// embed.title = Some("title".to_string());
 /// ```
+///
+/// [`HashMap`]: std::collections::HashMap
 #[derive(Clone, Debug, Default)]
 pub struct EmbedBuilder {
     /// The author of the embed.
@@ -398,10 +395,8 @@ pub struct EmbedBuilder {
 impl EmbedBuilder {
     /// Creates an empty [`EmbedBuilder`] object.
     ///
-    /// All fields are set to `None` or empty vectors. They can be changed by
+    /// All fields are set to [`None`] or empty vectors. They can be changed by
     /// mutating the struct directly or by using the setter methods.
-    ///
-    /// [`EmbedBuilder`]: struct.EmbedBuilder.html
     pub fn new() -> Self {
         Self::default()
     }
@@ -412,7 +407,7 @@ impl EmbedBuilder {
     /// `ChannelId::send_files`) with the provided filename or else this won't
     /// work.
     ///
-    /// [`set_image`]: #method.set_image
+    /// [`set_image`]: EmbedBuilder::set_image()
     pub fn set_attachment<S: ToString>(&mut self, filename: S) -> &mut Self {
         let mut filename = filename.to_string();
         filename.insert_str(0, "attachment://");
@@ -449,7 +444,6 @@ impl EmbedBuilder {
     /// });
     /// ```
     ///
-    /// [`EmbedAuthorBuilder`]: struct.EmbedAuthorBuilder.html
     pub fn set_author_with<F>(&mut self, f: F) -> &mut Self
     where
         F: FnOnce(&mut EmbedAuthorBuilder) -> &mut EmbedAuthorBuilder,
@@ -546,7 +540,6 @@ impl EmbedBuilder {
     /// });
     /// ```
     ///
-    /// [`EmbedFooterBuilder`]: struct.EmbedFooterBuilder.html
     pub fn set_footer_with<F>(&mut self, f: F) -> &mut Self
     where
         F: FnOnce(&mut EmbedFooterBuilder) -> &mut EmbedFooterBuilder,
@@ -592,9 +585,7 @@ impl EmbedBuilder {
         self
     }
 
-    /// Converts [`EmbedBuilder`] into serenity's `CreateEmbed`.
-    ///
-    /// [`EmbedBuilder`]: struct.EmbedBuilder.html
+    /// Converts [`EmbedBuilder`] into serenity's [`CreateEmbed`].
     pub fn to_create_embed(&self) -> CreateEmbed {
         self.into()
     }
