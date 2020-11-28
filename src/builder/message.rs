@@ -61,7 +61,7 @@ use serenity::{
 /// message.content = Some("content".to_string());
 /// message.tts = true;
 /// ```
-/// 
+///
 /// [`HashMap`]: std::collections::HashMap
 #[derive(Clone, Debug, Default)]
 pub struct MessageBuilder<'a> {

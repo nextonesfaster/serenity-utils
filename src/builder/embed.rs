@@ -175,7 +175,7 @@ impl From<&EmbedAuthorBuilder> for CreateEmbedAuthor {
 /// // Or by directly mutating the struct.
 /// footer.icon_url = Some("icon_url".to_string());
 /// ```
-/// 
+///
 /// [`HashMap`]: std::collections::HashMap
 #[derive(Clone, Debug)]
 pub struct EmbedFooterBuilder {
