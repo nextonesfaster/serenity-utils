@@ -19,7 +19,7 @@ To use this crate, add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-serenity_utils = "0.5.0"
+serenity_utils = "0.5.1"
 ```
 
 **Note:** This crate only supports [serenity]'s async versions and a minimum of Rust 1.39.
@@ -144,7 +144,7 @@ You can specify features by adding this to your `Cargo.toml`:
 
 ```toml
 [dependencies.serenity_utils]
-version = "0.5.0"
+version = "0.5.1"
 
 # To disable default features.
 default-features = false
@@ -159,7 +159,7 @@ features = ["cache", "native_tls_backend"]
 
 [serenity]: https://github.com/serenity-rs/serenity
 [serenity_utils]: https://github.com/AriusX7/serenity-utils
-[`examples`]: https://github.com/AriusX7/serenity-utils/tree/master/examples
+[`examples`]: https://github.com/AriusX7/serenity-utils/tree/current/examples
 [`serenity_utils`]: https://github.com/AriusX7/serenity-utils
 [license badge]: https://img.shields.io/badge/license-ISC-00D00D.svg?style=for-the-badge
 [license link]: https://github.com/AriusX7/serenity-utils/blob/master/LICENSE.md

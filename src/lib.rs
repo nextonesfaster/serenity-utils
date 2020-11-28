@@ -15,7 +15,7 @@
 //! To use this crate, add the following to your `Cargo.toml`:
 //! ```toml
 //! [dependencies]
-//! serenity_utils = "0.5.0"
+//! serenity_utils = "0.5.1"
 //! ```
 //!
 //! **Note:** This crate only supports [`serenity`]'s async versions.
