@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning][semver].
 
+## [0.5.2] - 2020-11-28
+
+### Changed
+
+- [dependency] Bump to serenity `0.10`. \[[@AriusX7]; [c:d12ab9f]]
+- [dependency] Bump to tokio `1.0`. \[[@AriusX7]; [c:d12ab9f]]
+- [dependency] Update examples to serenity `0.10` and tokio `1.0`. \[[@AriusX7]; [c:47f1e6a]]
+
 ## [0.5.1] - 2020-11-28
 
 ### Changed
@@ -65,12 +73,15 @@ This project adheres to [Semantic Versioning][semver].
 [0.4.0]: https://github.com/AriusX7/serenity-utils/compare/v0.3.0...v0.4.0
 [0.5.0]: https://github.com/AriusX7/serenity-utils/compare/v0.4.0...v0.5.0
 [0.5.1]: https://github.com/AriusX7/serenity-utils/compare/v0.5.0...v0.5.1
+[0.5.2]: https://github.com/AriusX7/serenity-utils/compare/v0.5.1...v0.5.2
 
 <!-- CONTRIBUTORS -->
 [@AriusX7]: https://github.com/AriusX7
 [@Headline]: https://github.com/Headline
 
 <!-- COMMITS -->
+[c:47f1e6a]: https://github.com/AriusX7/serenity-utils/commit/47f1e6acaaa90f4e279bdcdd16fbf136fc8a27ef
+[c:d12ab9f]: https://github.com/AriusX7/serenity-utils/commit/d12ab9fc95fa2ebce431c4682c78e2f8eb21a836
 [c:99f35a6]: https://github.com/AriusX7/serenity-utils/commit/99f35a6f502302b7242a13fa0e11bc5eb7adc460
 [c:41a3b91]: https://github.com/AriusX7/serenity-utils/commit/41a3b91536368719a1f7dcc4f217808414acf770
 [c:2d43851]: https://github.com/AriusX7/serenity-utils/commit/2d4385195826027a486e4b1752a2ceac17fb3b99
