@@ -123,7 +123,7 @@ async fn main() {
         .group(&GENERAL_GROUP);
 
     let token = env::var("DISCORD_TOKEN").expect("token");
-    let mut client = Client::new(token)
+    let mut client = Client::builder(token)
         .event_handler(Handler)
         .framework(framework)
         .await
