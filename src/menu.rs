@@ -147,7 +147,7 @@ impl<'a> Menu<'a> {
                     }
                 },
                 Err(e) => {
-                    self.clean_reactions().await?;
+                    let _ = self.clean_reactions().await;
 
                     // Timeout error isn't a valid error for the reaction menu.
                     if let Error::TimeoutError = e {
