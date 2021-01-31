@@ -14,10 +14,18 @@ keywords = ["discord", "serenity", "utilities", "rust"]
 
 [features]
 default = ["cache", "rustls_backend"]
+default_native_tls = ["cache", "native_tls_backend"]
 
 cache = ["serenity/cache"]
-native_tls_backend = ["serenity/native_tls_backend"]
-rustls_backend = ["serenity/rustls_backend"]
+rustls_backend = ["tokio", "serenity/rustls_backend"]
+native_tls_backend = ["tokio", "serenity/native_tls_backend"]
+
+# Tokio v0.2 compatibility
+rustls_tokio_0_2_backend = ["tokio_compat", "serenity/rustls_tokio_0_2_backend"]
+native_tls_tokio_0_2_backend = ["tokio_compat", "serenity/native_tls_tokio_0_2_backend"]
+
+default_tokio_0_2 = ["cache", "rustls_tokio_0_2_backend"]
+default_native_tls_tokio_0_2 = ["cache", "native_tls_tokio_0_2_backend"]
 
 [dependencies.serenity]
 version = "0.10"
@@ -27,4 +35,13 @@ features = ["client", "collector", "gateway", "model"]
 [dependencies.tokio]
 version = "1.0"
 default-features = false
+optional = true
 features = ["rt"]
+
+# Tokio v0.2 compatibility
+[dependencies.tokio_compat]
+package = "tokio"
+version = "0.2"
+optional = true
+default-features = false
+features = ["rt-core"]
