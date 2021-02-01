@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning][semver].
 
+## [0.6.1] - 2021-02-01
+
+### Added
+
+- [dependency] Add features to depend on tokio `0.2`. \[[@AriusX7]; [c:d075c5a]]
+
+### Changes
+
+- Ignore errors on reactions cleanup in `Menu`. \[[@AriusX7]; [c:f0949ea]]
+
 ## [0.6.0] - 2021-01-10
 
 ### Changed
@@ -74,12 +84,15 @@ This project adheres to [Semantic Versioning][semver].
 [0.5.0]: https://github.com/AriusX7/serenity-utils/compare/v0.4.0...v0.5.0
 [0.5.1]: https://github.com/AriusX7/serenity-utils/compare/v0.5.0...v0.5.1
 [0.6.0]: https://github.com/AriusX7/serenity-utils/compare/v0.5.1...v0.6.0
+[0.6.1]: https://github.com/AriusX7/serenity-utils/compare/v0.6.0...v0.6.1
 
 <!-- CONTRIBUTORS -->
 [@AriusX7]: https://github.com/AriusX7
 [@Headline]: https://github.com/Headline
 
 <!-- COMMITS -->
+[c:f0949ea]: https://github.com/AriusX7/serenity-utils/commit/f0949eae2f13b43146989c246754e1b3137506b6
+[c:d075c5a]: https://github.com/AriusX7/serenity-utils/commit/d075c5afff8bd31a88ee783fc53f650bce073bdc
 [c:00c1b0a]: https://github.com/AriusX7/serenity-utils/commit/00c1b0a2df9be211b2c880ae5ade0ec8d17a601b
 [c:382b114]: https://github.com/AriusX7/serenity-utils/commit/382b1143abf931ac0efff93404523d65d0741bfa
 [c:99f35a6]: https://github.com/AriusX7/serenity-utils/commit/99f35a6f502302b7242a13fa0e11bc5eb7adc460
