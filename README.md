@@ -121,24 +121,30 @@ More examples detailing the crate's functionality can be found in the [`examples
 
 Some functionality of this crate is dependent on [serenity]'s features.
 
-The following serenity features are required when using [`serenity_utils`]:
+The following [serenity] features are required when using [`serenity_utils`]:
 
 - **client**
 - **collector**
 - **gateway**
 - **model**
 
-The following serenity_utils features are optional:
+The following [`serenity_utils`] features are optional:
 
-- **cache**: It is required to get `Member` from user name, tag or nickname when using the `Conversion` trait.
+- **cache**: Enables [serenity]'s `cache` feature. It is required to get `Member` from user name, tag or nickname when using the `Conversion` trait.
 - **rustls_backend**: Uses `Rustls` for all platforms, a pure Rust implementation.
 - **native_tls_backend**: Uses `SChannel` on Windows, `Secure Transport` on macOS, and `OpenSSL` on other platforms.
-
-They enable serenity's features with the same names.
-
-**Note:** One of `rustls_backend` and `native_tls_backend` must be used.
+- **rustls_tokio_0_2_backend**: Same as `rustls_backend` but uses tokio `0.2`.
+- **native_tls_tokio_0_2_backend**: Same as `native_tls` but uses tokio `0.2`.
 
 **cache** and **rustls_backend** are enabled by default.
+
+- **default_native_tls**: Enables default [`serenity_utils`] features with `native_tls_backend`.
+- **default_tokio_0_2**: Enables default [`serenity_utils`] features using tokio `0.2`.
+- **default_native_tls_tokio_0_2**: Enables default [`serenity_utils`] features with `native_tls_backend` using tokio `0.2`.
+
+They enable [serenity]'s features with the same names.
+
+**Note:** One of `rustls_backend` and `native_tls_backend` must be used.
 
 You can specify features by adding this to your `Cargo.toml`:
 
@@ -155,7 +161,7 @@ features = ["cache", "native_tls_backend"]
 
 ## License
 
-`serenity_utils` is available under the ISC license. See [LICENSE](LICENSE.md) for more details.
+[`serenity_utils`] is available under the ISC license. See [LICENSE](LICENSE.md) for more details.
 
 [serenity]: https://github.com/serenity-rs/serenity
 [serenity_utils]: https://github.com/AriusX7/serenity-utils
