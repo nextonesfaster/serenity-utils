@@ -10,7 +10,7 @@ This project adheres to [Semantic Versioning][semver].
 
 - [dependency] Add features to depend on tokio `0.2`. \[[@AriusX7]; [c:d075c5a]]
 
-### Changes
+### Changed
 
 - Ignore errors on reactions cleanup in `Menu`. \[[@AriusX7]; [c:f0949ea]]
 
