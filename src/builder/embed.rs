@@ -31,8 +31,8 @@
 //! [`HashMap`]: std::collections::HashMap
 
 use serenity::{
-    builder::{CreateEmbed, CreateEmbedAuthor, CreateEmbedFooter, Timestamp},
-    model::channel::EmbedField,
+    builder::{CreateEmbed, CreateEmbedAuthor, CreateEmbedFooter},
+    model::{channel::EmbedField, Timestamp},
     utils::Colour,
 };
 

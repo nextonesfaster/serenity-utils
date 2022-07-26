@@ -10,9 +10,10 @@ use serenity::{
         Args, CommandResult, StandardFramework,
     },
     model::{
-        misc::Mentionable,
+        mention::Mentionable,
         prelude::{Member, Message, Ready},
     },
+    prelude::GatewayIntents,
 };
 
 // Bring the `Conversion` trait into scope.
@@ -25,7 +26,9 @@ async fn hello(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
     // We'll use the `from_guild_id_and_str` method as it works even if the
     // cache feature is not enabled.
     // Please note that a `Member` object cannot be created from user name,
-    // nickname or user tag if the `cache` feature is not enabled.
+    // nickname or user tag if the `cache` feature and the `GUILDS` and
+    // `GUILD_PRESENCES` intents are not enabled. User mentions
+    // and IDs work.
     if let Some(guild_id) = msg.guild_id {
         if let Some(member) = Member::from_guild_id_and_str(ctx, guild_id, args.message()).await {
             msg.channel_id
@@ -39,6 +42,10 @@ async fn hello(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
                 .say(&ctx.http, "No member found from the given input.")
                 .await?;
         }
+    } else {
+        msg.channel_id
+            .say(&ctx.http, "This command is only available in servers.")
+            .await?;
     }
 
     // The `Conversion` trait can be used for `Role` and `GuildChannel` similarly.
@@ -68,11 +75,17 @@ async fn main() {
         .group(&GENERAL_GROUP);
 
     let token = env::var("DISCORD_TOKEN").expect("token");
-    let mut client = Client::builder(token)
-        .event_handler(Handler)
-        .framework(framework)
-        .await
-        .expect("Error creating client");
+    let mut client = Client::builder(
+        token,
+        GatewayIntents::GUILD_MESSAGES
+            | GatewayIntents::MESSAGE_CONTENT
+            | GatewayIntents::GUILD_PRESENCES
+            | GatewayIntents::GUILDS,
+    )
+    .event_handler(Handler)
+    .framework(framework)
+    .await
+    .expect("Error creating client");
 
     if let Err(why) = client.start().await {
         println!("An error occurred while running the client: {:?}", why);

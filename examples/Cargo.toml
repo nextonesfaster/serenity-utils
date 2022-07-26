@@ -1,6 +1,0 @@
-[workspace]
-members = [
-    "e01_prompts",
-    "e02_menu",
-    "e03_conversion",
-]

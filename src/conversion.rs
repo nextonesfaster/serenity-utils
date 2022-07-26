@@ -57,7 +57,7 @@
 //! [`from_guild_and_str`]: Conversion::from_guild_and_str
 //! [`from_guild_id_and_str`]: Conversion::from_guild_id_and_str
 
-use serenity::{async_trait, model::prelude::*, prelude::Context, utils::parse_mention};
+use serenity::{async_trait, model::prelude::*, prelude::Context, utils};
 use std::collections::HashMap;
 
 /// A trait to convert a string into serenity's models.
@@ -82,9 +82,10 @@ use std::collections::HashMap;
 ///
 /// ## Limitation
 ///
-/// If the `cache` feature is not enabled, an argument is only treated as an ID
-/// or mention when trying to convert to [`Member`]. It is not treated as user
-/// name, nickname or tag.
+/// An argument is only treated as an ID or mention when trying to
+/// convert to [`Member`] if the `cache` feature and the `GUILDS`
+/// and `GUILD_PRESENCES` intents are not enabled. It is not treated as
+/// user name, nickname or tag.
 ///
 /// ## Implementation
 ///
@@ -139,7 +140,7 @@ impl Conversion for Role {
     {
         #[cfg(feature = "cache")]
         {
-            if let Some(roles) = ctx.cache.guild_roles(guild_id).await {
+            if let Some(roles) = ctx.cache.guild_roles(guild_id) {
                 return role_from_mapping(arg, &roles).await;
             }
         }
@@ -149,7 +150,7 @@ impl Conversion for Role {
         match arg.parse::<u64>() {
             // `arg` is role ID.
             Ok(id) => roles.iter().find(|r| r.id.0 == id).cloned(),
-            Err(_) => match parse_mention(arg) {
+            Err(_) => match utils::parse_role(arg) {
                 // `arg` is role mention.
                 Some(id) => roles.iter().find(|r| r.id.0 == id).cloned(),
                 // `arg` is role name.
@@ -184,7 +185,7 @@ impl Conversion for Member {
     {
         #[cfg(feature = "cache")]
         {
-            if let Some(members) = ctx.cache.guild_field(guild_id, |g| g.members.clone()).await {
+            if let Some(members) = ctx.cache.guild_field(guild_id, |g| g.members.clone()) {
                 return member_from_mapping(arg, &members).await;
             }
         }
@@ -192,7 +193,7 @@ impl Conversion for Member {
         let id = match arg.parse::<u64>() {
             // `arg` is a user ID.
             Ok(id) => id,
-            Err(_) => match parse_mention(arg) {
+            Err(_) => match utils::parse_username(arg) {
                 Some(id) => id,
                 None => return None,
             },
@@ -227,7 +228,7 @@ impl Conversion for GuildChannel {
     {
         #[cfg(feature = "cache")]
         {
-            if let Some(channels) = ctx.cache.guild_channels(guild_id).await {
+            if let Some(channels) = ctx.cache.guild_field(guild_id, |g| g.channels.clone()) {
                 return channel_from_mapping(arg, &channels).await;
             }
         }
@@ -237,7 +238,7 @@ impl Conversion for GuildChannel {
         match arg.parse::<u64>() {
             // `arg` is channel ID.
             Ok(id) => channels.iter().find(|c| c.id.0 == id).cloned(),
-            Err(_) => match parse_mention(arg) {
+            Err(_) => match utils::parse_channel(arg) {
                 // `arg` is channel mention.
                 Some(id) => channels.iter().find(|c| c.id.0 == id).cloned(),
                 // `arg` is channel name.
@@ -251,7 +252,7 @@ async fn role_from_mapping(arg: &str, roles: &HashMap<RoleId, Role>) -> Option<R
     match arg.parse::<u64>() {
         // `arg` is a role ID.
         Ok(id) => roles.get(&RoleId(id)).cloned(),
-        Err(_) => match parse_mention(arg) {
+        Err(_) => match utils::parse_role(arg) {
             // `arg` is a role mention.
             Some(id) => roles.get(&RoleId(id)).cloned(),
             // `arg` is a role name.
@@ -264,7 +265,7 @@ async fn member_from_mapping(arg: &str, members: &HashMap<UserId, Member>) -> Op
     match arg.parse::<u64>() {
         // `arg` is a user ID.
         Ok(id) => members.get(&UserId(id)).cloned(),
-        Err(_) => match parse_mention(arg) {
+        Err(_) => match utils::parse_username(arg) {
             // `arg` is a member mention.
             Some(id) => members.get(&UserId(id)).cloned(),
             // `arg` is a member's name or nickname.
@@ -280,16 +281,27 @@ async fn member_from_mapping(arg: &str, members: &HashMap<UserId, Member>) -> Op
 
 async fn channel_from_mapping(
     arg: &str,
-    channels: &HashMap<ChannelId, GuildChannel>,
+    channels: &HashMap<ChannelId, Channel>,
 ) -> Option<GuildChannel> {
+    let get_guild_channel = |channel| {
+        if let &Channel::Guild(ref c) = channel {
+            Some(c)
+        } else {
+            None
+        }
+    };
+
     match arg.parse::<u64>() {
         // `arg` is a channel ID.
-        Ok(id) => channels.get(&ChannelId(id)).cloned(),
-        Err(_) => match parse_mention(arg) {
+        Ok(id) => channels.get(&ChannelId(id)).and_then(get_guild_channel),
+        Err(_) => match utils::parse_channel(arg) {
             // `arg` is a channel mention.
-            Some(id) => channels.get(&ChannelId(id)).cloned(),
+            Some(id) => channels.get(&ChannelId(id)).and_then(get_guild_channel),
             // `arg` is a channel name.
-            None => channels.values().find(|c| c.name == arg).cloned(),
+            None => channels
+                .values()
+                .find_map(|c| get_guild_channel(c).filter(|c| c.name == arg)),
         },
     }
+    .cloned()
 }
