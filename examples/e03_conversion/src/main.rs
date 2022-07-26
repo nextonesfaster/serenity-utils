@@ -16,7 +16,9 @@ use serenity::{
     prelude::GatewayIntents,
 };
 
-// Bring the `Conversion` trait into scope.
+// Bring the `Conversion` trait into scope. Note that it is
+// now deprecated. Use serenity's `ArgumentConvert` trait instead.
+#[allow(deprecated)]
 use serenity_utils::conversion::Conversion;
 
 use std::env;
