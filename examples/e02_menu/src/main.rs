@@ -2,22 +2,18 @@
 //!
 //! You are expected to be familier with serenity's basics.
 
-use serenity::{
-    async_trait,
-    builder::CreateMessage,
-    client::{Client, Context, EventHandler},
-    framework::standard::{
-        macros::{command, group},
-        CommandResult, StandardFramework,
-    },
-    model::prelude::{Message, Reaction, ReactionType, Ready},
-    prelude::GatewayIntents,
-};
+use std::env;
+use std::sync::Arc;
 
+use serenity::async_trait;
+use serenity::builder::CreateMessage;
+use serenity::client::{Client, Context, EventHandler};
+use serenity::framework::standard::macros::{command, group};
+use serenity::framework::standard::{CommandResult, StandardFramework};
+use serenity::model::prelude::{Message, Reaction, ReactionType, Ready};
+use serenity::prelude::GatewayIntents;
 // Bring menu items into scope along.
 use serenity_utils::menu::*;
-
-use std::{env, sync::Arc};
 
 // A custom function to be used as a control function for the menu.
 async fn first_page<'a>(menu: &mut Menu<'a>, reaction: Reaction) {
@@ -43,26 +39,11 @@ async fn scoreboard(ctx: &Context, msg: &Message) -> CommandResult {
 
     // First, let's create controls for the menu.
     let controls = vec![
-        Control::new(
-            ReactionType::from('⏪'),
-            Arc::new(|m, r| Box::pin(first_page(m, r))),
-        ),
-        Control::new(
-            ReactionType::from('◀'),
-            Arc::new(|m, r| Box::pin(prev_page(m, r))),
-        ),
-        Control::new(
-            ReactionType::from('❌'),
-            Arc::new(|m, r| Box::pin(close_menu(m, r))),
-        ),
-        Control::new(
-            ReactionType::from('▶'),
-            Arc::new(|m, r| Box::pin(next_page(m, r))),
-        ),
-        Control::new(
-            ReactionType::from('⏩'),
-            Arc::new(|m, r| Box::pin(last_page(m, r))),
-        ),
+        Control::new(ReactionType::from('⏪'), Arc::new(|m, r| Box::pin(first_page(m, r)))),
+        Control::new(ReactionType::from('◀'), Arc::new(|m, r| Box::pin(prev_page(m, r)))),
+        Control::new(ReactionType::from('❌'), Arc::new(|m, r| Box::pin(close_menu(m, r)))),
+        Control::new(ReactionType::from('▶'), Arc::new(|m, r| Box::pin(next_page(m, r)))),
+        Control::new(ReactionType::from('⏩'), Arc::new(|m, r| Box::pin(last_page(m, r)))),
     ];
 
     // Let's create options for the menu.
@@ -119,9 +100,7 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
-    let framework = StandardFramework::new()
-        .configure(|c| c.prefix("~"))
-        .group(&GENERAL_GROUP);
+    let framework = StandardFramework::new().configure(|c| c.prefix("~")).group(&GENERAL_GROUP);
 
     let token = env::var("DISCORD_TOKEN").expect("token");
     let mut client = Client::builder(

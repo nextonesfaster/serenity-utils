@@ -1,9 +1,8 @@
+use std::borrow::Cow;
+use std::error::Error as StdError;
+use std::fmt::{self, Display, Formatter};
+
 use serenity::Error as SerenityError;
-use std::{
-    borrow::Cow,
-    error::Error as StdError,
-    fmt::{self, Display, Formatter},
-};
 
 /// A common error type for all functions and methods of the library.
 ///

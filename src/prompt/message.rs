@@ -20,11 +20,10 @@
 //! }
 //! ```
 
-use serenity::{
-    model::prelude::{Message, User},
-    prelude::Context,
-};
 use std::time::Duration;
+
+use serenity::model::prelude::{Message, User};
+use serenity::prelude::Context;
 
 /// Creates a message prompt to get the next message a user sends.
 ///

@@ -60,8 +60,11 @@
 //! [`from_guild_and_str`]: Conversion::from_guild_and_str
 //! [`from_guild_id_and_str`]: Conversion::from_guild_id_and_str
 
-use serenity::{async_trait, model::prelude::*, prelude::Context, utils};
 use std::collections::HashMap;
+
+use serenity::model::prelude::*;
+use serenity::prelude::Context;
+use serenity::{async_trait, utils};
 
 /// A trait to convert a string into serenity's models.
 ///
@@ -301,9 +304,7 @@ async fn channel_from_mapping(
             // `arg` is a channel mention.
             Some(id) => channels.get(&ChannelId(id)).and_then(get_guild_channel),
             // `arg` is a channel name.
-            None => channels
-                .values()
-                .find_map(|c| get_guild_channel(c).filter(|c| c.name == arg)),
+            None => channels.values().find_map(|c| get_guild_channel(c).filter(|c| c.name == arg)),
         },
     }
     .cloned()

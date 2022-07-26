@@ -30,11 +30,10 @@
 //!
 //! [`HashMap`]: std::collections::HashMap
 
+use serenity::builder::{CreateMessage, EditMessage};
+use serenity::model::channel::{AttachmentType, ReactionType};
+
 use super::embed::EmbedBuilder;
-use serenity::{
-    builder::{CreateMessage, EditMessage},
-    model::channel::{AttachmentType, ReactionType},
-};
 
 /// A struct to build a message.
 ///
@@ -154,8 +153,7 @@ impl<'a> MessageBuilder<'a> {
         T: Into<AttachmentType<'a>>,
         It: IntoIterator<Item = T>,
     {
-        self.files
-            .extend(files.into_iter().map(|f| f.into()).collect::<Vec<_>>());
+        self.files.extend(files.into_iter().map(|f| f.into()).collect::<Vec<_>>());
 
         self
     }
@@ -193,8 +191,7 @@ impl<'a> MessageBuilder<'a> {
         R: Into<ReactionType>,
         It: IntoIterator<Item = R>,
     {
-        self.reactions
-            .extend(reactions.into_iter().map(|r| r.into()).collect::<Vec<_>>());
+        self.reactions.extend(reactions.into_iter().map(|r| r.into()).collect::<Vec<_>>());
 
         self
     }

@@ -2,11 +2,10 @@
 //!
 //! The functions defined in this module do not require any features to be enabled.
 
+use std::borrow::Cow;
+use std::fmt::{Display, Write};
+
 use serenity::model::channel::AttachmentType;
-use std::{
-    borrow::Cow,
-    fmt::{Display, Write},
-};
 
 /// A struct to set [`pagify`]'s options.
 ///
@@ -144,7 +143,7 @@ impl<'a> Default for PagifyOptions<'a> {
 ///     "This is the first sentence.\
 ///     \nAnother sentence.\nThis is a long sentence and \
 ///     will be broken into two.",
-///     options
+///     options,
 /// );
 /// assert_eq!(
 ///     vec![
@@ -184,12 +183,9 @@ pub fn pagify<S: ToString>(text: S, mut options: PagifyOptions<'_>) -> Vec<Strin
             .iter()
             .filter_map(|&d| in_text[1..this_page_len].rfind(d).map(|i| i + 1));
 
-        let closest_delim = if options.priority {
-            possible_delims.find(|&d| d > 1)
-        } else {
-            possible_delims.max()
-        }
-        .unwrap_or(this_page_len);
+        let closest_delim =
+            if options.priority { possible_delims.find(|&d| d > 1) } else { possible_delims.max() }
+                .unwrap_or(this_page_len);
 
         let to_send = if options.escape_mass_mentions {
             escape_mass_mentions(&in_text[..closest_delim])
@@ -225,9 +221,7 @@ pub fn pagify<S: ToString>(text: S, mut options: PagifyOptions<'_>) -> Vec<Strin
 ///
 /// [`content_safe`]: serenity::utils::content_safe
 pub fn escape_mass_mentions<S: ToString>(text: S) -> String {
-    text.to_string()
-        .replace("@everyone", "@\u{200b}everyone")
-        .replace("@here", "@\u{200b}here")
+    text.to_string().replace("@everyone", "@\u{200b}everyone").replace("@here", "@\u{200b}here")
 }
 
 /// Creates serenity's [`AttachmentType`] from the given text.

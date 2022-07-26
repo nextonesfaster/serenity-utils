@@ -1,6 +1,7 @@
 #![allow(deprecated)]
 
-use serenity::{builder::*, model::prelude::ReactionType};
+use serenity::builder::*;
+use serenity::model::prelude::ReactionType;
 use serenity_utils::builder::prelude::*;
 
 #[test]
@@ -9,9 +10,7 @@ fn test_to_create_embed_author() {
     builder.set_url("https://github.com/AriusX7/serenity-utils");
 
     let mut create_embed_author = CreateEmbedAuthor::default();
-    create_embed_author
-        .name("Arius")
-        .url("https://github.com/AriusX7/serenity-utils");
+    create_embed_author.name("Arius").url("https://github.com/AriusX7/serenity-utils");
 
     assert_eq!(builder.to_create_embed_author().0, create_embed_author.0);
 }
@@ -22,9 +21,7 @@ fn test_to_create_embed_footer() {
     builder.set_icon_url("https://github.com/AriusX7/serenity-utils");
 
     let mut create_embed_footer = CreateEmbedFooter::default();
-    create_embed_footer
-        .text("text")
-        .icon_url("https://github.com/AriusX7/serenity-utils");
+    create_embed_footer.text("text").icon_url("https://github.com/AriusX7/serenity-utils");
 
     assert_eq!(builder.to_create_embed_footer().0, create_embed_footer.0);
 }
@@ -100,18 +97,16 @@ fn test_to_edit_message() {
         .add_reactions(vec![ReactionType::from('🐶'), ReactionType::from('🐱')]);
 
     let mut edit_message = EditMessage::default();
-    edit_message
-        .content("This is the message content.")
-        .embed(|e| {
-            e.description("This is the embed description.");
-            e.author(|a| {
-                a.name("The embed author name!");
+    edit_message.content("This is the message content.").embed(|e| {
+        e.description("This is the embed description.");
+        e.author(|a| {
+            a.name("The embed author name!");
 
-                a
-            });
-
-            e
+            a
         });
+
+        e
+    });
 
     assert_eq!(builder.to_edit_message().0, edit_message.0);
 }

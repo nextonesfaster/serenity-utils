@@ -2,21 +2,16 @@
 //!
 //! You are expected to be familier with serenity's basics.
 
-use serenity::{
-    async_trait,
-    client::{Client, Context, EventHandler},
-    framework::standard::{
-        macros::{command, group},
-        CommandResult, StandardFramework,
-    },
-    model::prelude::{Message, ReactionType, Ready},
-    prelude::GatewayIntents,
-};
+use std::env;
 
+use serenity::async_trait;
+use serenity::client::{Client, Context, EventHandler};
+use serenity::framework::standard::macros::{command, group};
+use serenity::framework::standard::{CommandResult, StandardFramework};
+use serenity::model::prelude::{Message, ReactionType, Ready};
+use serenity::prelude::GatewayIntents;
 // Bring prompt functions into scope.
 use serenity_utils::prompt::{message_prompt_content, reaction_prompt};
-
-use std::env;
 
 #[group]
 #[commands(colour, pet)]
@@ -33,9 +28,7 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
-    let framework = StandardFramework::new()
-        .configure(|c| c.prefix("~"))
-        .group(&GENERAL_GROUP);
+    let framework = StandardFramework::new().configure(|c| c.prefix("~")).group(&GENERAL_GROUP);
 
     let token = env::var("DISCORD_TOKEN").expect("token");
     let mut client = Client::builder(
@@ -58,10 +51,7 @@ async fn main() {
 
 #[command]
 async fn colour(ctx: &Context, msg: &Message) -> CommandResult {
-    let prompt_msg = msg
-        .channel_id
-        .say(&ctx.http, "What is your favourite colour?")
-        .await?;
+    let prompt_msg = msg.channel_id.say(&ctx.http, "What is your favourite colour?").await?;
 
     // We want to get the content of the user's response. The prompt will wait for
     // the first message user sends in the channel where this message was used
@@ -69,8 +59,7 @@ async fn colour(ctx: &Context, msg: &Message) -> CommandResult {
     // message in 30 seconds, the prompt will end.
     // You can use `message_prompt` to get the `Message` instead of the content.
     if let Some(colour) = message_prompt_content(ctx, &prompt_msg, &msg.author, 30.0).await {
-        msg.reply(&ctx.http, format!("{} is my favourite too!", colour))
-            .await?;
+        msg.reply(&ctx.http, format!("{} is my favourite too!", colour)).await?;
     } else {
         // No response.
         msg.reply(&ctx.http, "I like red!").await?;
@@ -85,10 +74,8 @@ async fn pet(ctx: &Context, msg: &Message) -> CommandResult {
     let emojis = [ReactionType::from('🐶'), ReactionType::from('🐱')];
 
     // Send a message to the user and ask them to react.
-    let prompt_msg = msg
-        .channel_id
-        .say(&ctx.http, "Do you like dogs or cats more? React below!")
-        .await?;
+    let prompt_msg =
+        msg.channel_id.say(&ctx.http, "Do you like dogs or cats more? React below!").await?;
 
     // The prompt will wait for the first reaction user adds to the `prompt_msg`
     // and then return the index of the emoji and the emoji itself. If that user
@@ -97,12 +84,10 @@ async fn pet(ctx: &Context, msg: &Message) -> CommandResult {
 
     if index == 0 {
         // The user reacted with `🐶`.
-        msg.reply(&ctx.http, format!("I like {} more!", emojis[1]))
-            .await?;
+        msg.reply(&ctx.http, format!("I like {} more!", emojis[1])).await?;
     } else {
         // The user reacted with `🐱`.
-        msg.reply(&ctx.http, format!("I like {} more!", emojis[0]))
-            .await?;
+        msg.reply(&ctx.http, format!("I like {} more!", emojis[0])).await?;
     }
 
     Ok(())

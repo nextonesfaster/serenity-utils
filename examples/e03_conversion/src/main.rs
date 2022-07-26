@@ -2,26 +2,19 @@
 //!
 //! You are expected to be familier with serenity's basics.
 
-use serenity::{
-    async_trait,
-    client::{Client, Context, EventHandler},
-    framework::standard::{
-        macros::{command, group},
-        Args, CommandResult, StandardFramework,
-    },
-    model::{
-        mention::Mentionable,
-        prelude::{Member, Message, Ready},
-    },
-    prelude::GatewayIntents,
-};
+use std::env;
 
+use serenity::async_trait;
+use serenity::client::{Client, Context, EventHandler};
+use serenity::framework::standard::macros::{command, group};
+use serenity::framework::standard::{Args, CommandResult, StandardFramework};
+use serenity::model::mention::Mentionable;
+use serenity::model::prelude::{Member, Message, Ready};
+use serenity::prelude::GatewayIntents;
 // Bring the `Conversion` trait into scope. Note that it is
 // now deprecated. Use serenity's `ArgumentConvert` trait instead.
 #[allow(deprecated)]
 use serenity_utils::conversion::Conversion;
-
-use std::env;
 
 #[command]
 async fn hello(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
@@ -35,20 +28,13 @@ async fn hello(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
         #[allow(deprecated)]
         if let Some(member) = Member::from_guild_id_and_str(ctx, guild_id, args.message()).await {
             msg.channel_id
-                .say(
-                    &ctx.http,
-                    format!("{} said hello, {}!", msg.author.name, member.mention()),
-                )
+                .say(&ctx.http, format!("{} said hello, {}!", msg.author.name, member.mention()))
                 .await?;
         } else {
-            msg.channel_id
-                .say(&ctx.http, "No member found from the given input.")
-                .await?;
+            msg.channel_id.say(&ctx.http, "No member found from the given input.").await?;
         }
     } else {
-        msg.channel_id
-            .say(&ctx.http, "This command is only available in servers.")
-            .await?;
+        msg.channel_id.say(&ctx.http, "This command is only available in servers.").await?;
     }
 
     // The `Conversion` trait can be used for `Role` and `GuildChannel` similarly.
@@ -73,9 +59,7 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
-    let framework = StandardFramework::new()
-        .configure(|c| c.prefix("~"))
-        .group(&GENERAL_GROUP);
+    let framework = StandardFramework::new().configure(|c| c.prefix("~")).group(&GENERAL_GROUP);
 
     let token = env::var("DISCORD_TOKEN").expect("token");
     let mut client = Client::builder(
