@@ -28,7 +28,9 @@
 //! [`serenity`]: https://github.com/serenity-rs/serenity
 //! [`examples`]: https://github.com/AriusX7/serenity-utils/tree/current/examples
 
+#[deprecated(since = "0.7.0", note = "please use serenity's builders directly")]
 pub mod builder;
+#[deprecated(since = "0.7.0", note = "please use serenity's ArgumentConvert trait")]
 pub mod conversion;
 mod error;
 pub mod formatting;
