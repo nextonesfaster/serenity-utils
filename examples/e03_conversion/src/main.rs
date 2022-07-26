@@ -32,6 +32,7 @@ async fn hello(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
     // `GUILD_PRESENCES` intents are not enabled. User mentions
     // and IDs work.
     if let Some(guild_id) = msg.guild_id {
+        #[allow(deprecated)]
         if let Some(member) = Member::from_guild_id_and_str(ctx, guild_id, args.message()).await {
             msg.channel_id
                 .say(
