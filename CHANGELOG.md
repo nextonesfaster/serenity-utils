@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning][semver].
 
+## [0.7.0] - 2022-07-25
+
+### Changed
+
+- [dependency] Update to use serenity v`0.11` \[[@AriusX7]; [c:825d98b]]
+- Deprecate `builder` and `conversion` modules \[[@AriusX7]; [c:df150a2], [c:b940d3e], [c:1a5b6e0]]
+- Improve documentation \[[@AriusX7]; [c:01e4f38]]
+
 ## [0.6.1] - 2021-02-01
 
 ### Added
@@ -85,6 +93,7 @@ This project adheres to [Semantic Versioning][semver].
 [0.5.1]: https://github.com/AriusX7/serenity-utils/compare/v0.5.0...v0.5.1
 [0.6.0]: https://github.com/AriusX7/serenity-utils/compare/v0.5.1...v0.6.0
 [0.6.1]: https://github.com/AriusX7/serenity-utils/compare/v0.6.0...v0.6.1
+[0.7.0]: https://github.com/AriusX7/serenity-utils/compare/v0.6.1...v0.7.0
 
 <!-- CONTRIBUTORS -->
 [@AriusX7]: https://github.com/AriusX7
@@ -99,3 +108,8 @@ This project adheres to [Semantic Versioning][semver].
 [c:41a3b91]: https://github.com/AriusX7/serenity-utils/commit/41a3b91536368719a1f7dcc4f217808414acf770
 [c:2d43851]: https://github.com/AriusX7/serenity-utils/commit/2d4385195826027a486e4b1752a2ceac17fb3b99
 [c:53db2ae]: https://github.com/AriusX7/serenity-utils/commit/53db2aef3673b6fff4c49c2a787c17f7d8da0cb7
+[c:825d98b]: https://github.com/AriusX7/serenity-utils/commit/825d98ba001a4367a05c83100c2891dbff43076f
+[c:df150a2]: https://github.com/AriusX7/serenity-utils/commit/df150a2f71421e1c7a9eaa4cdf8e5a4a926e2bc6
+[c:b940d3e]: https://github.com/AriusX7/serenity-utils/commit/b940d3ea758309aacc61a50634c4ade3bf3748d0
+[c:1a5b6e0]: https://github.com/AriusX7/serenity-utils/commit/1a5b6e0184d517347ab70aab3cec2933cb32be91
+[c:01e4f38]: https://github.com/AriusX7/serenity-utils/commit/01e4f3812866127bae5d2cf83d96078894174294

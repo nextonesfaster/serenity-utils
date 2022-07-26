@@ -7,11 +7,11 @@ Discord bots created with [serenity].
 
 This library provides implementations to easily:
 
-- Convert a string to [serenity]'s guild-specific models.
 - Get user response using message or reaction prompts.
 - Display paginated reaction-based messages/menus.
 - Format text in different ways before sending.
-- Create embeds and messages with field access.
+- ~~Convert a string to [serenity]'s guild-specific models.~~ (deprecated; use serenity's `ArgumentConvert` trait instead)
+- ~~Create embeds and messages with field access.~~ (deprecated; use serenity's builder directly)
 
 ## Installation and Usage
 
@@ -19,10 +19,10 @@ To use this crate, add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-serenity_utils = "0.6.1"
+serenity_utils = "0.7.0"
 ```
 
-**Note:** This crate only supports [serenity]'s async versions and a minimum of Rust 1.39.
+**Note:** This crate only supports [serenity]'s async versions and a minimum of Rust 1.53 (consistent with the latest serenity version).
 
 ## Examples
 
@@ -146,7 +146,7 @@ You can specify features by adding this to your `Cargo.toml`:
 
 ```toml
 [dependencies.serenity_utils]
-version = "0.6.1"
+version = "0.7.0"
 
 # To disable default features.
 default-features = false
