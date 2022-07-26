@@ -26,15 +26,17 @@
 //!
 //! ```
 //! # use serenity::{model::prelude::{Guild, Member, Message}, prelude::Context};
+//! # #[allow(deprecated)]
 //! # use serenity_utils::conversion::Conversion;
 //! #
 //! async fn foo(ctx: &Context, msg: &Message, arg: &str) {
-//!     let guild = match msg.guild(&ctx.cache).await {
+//!     let guild = match msg.guild(&ctx.cache) {
 //!         Some(g) => g,
-//!         None => return
+//!         None => return,
 //!     };
 //!
 //!     // Tries to get member from guild and the argument.
+//! #   #[allow(deprecated)]
 //!     let opt_member = Member::from_guild_and_str(&guild, arg).await;
 //! }
 //! ```
@@ -49,6 +51,7 @@
 //! async fn bar(ctx: &Context, msg: &Message, arg: &str) {
 //!     // Tries to get role from guild id and the argument.
 //!     if let Some(guild_id) = msg.guild_id {
+//! #      #[allow(deprecated)]
 //!         let opt_role = Role::from_guild_id_and_str(ctx, guild_id, arg).await;
 //!     }
 //! }

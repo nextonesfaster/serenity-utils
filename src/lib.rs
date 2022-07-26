@@ -28,6 +28,8 @@
 //! [`serenity`]: https://github.com/serenity-rs/serenity
 //! [`examples`]: https://github.com/AriusX7/serenity-utils/tree/current/examples
 
+#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+
 #[deprecated(since = "0.7.0", note = "please use serenity's builders directly")]
 pub mod builder;
 #[deprecated(since = "0.7.0", note = "please use serenity's ArgumentConvert trait")]

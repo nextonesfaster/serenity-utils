@@ -12,7 +12,6 @@
 //! **Note:** This functionality has been ported from [`Red-DiscordBot`]'s
 //! [`menu`] function.
 //!
-//! [`Menu`]: Menu
 //! [`Red-DiscordBot`]: https://github.com/Cog-Creators/Red-DiscordBot/
 //! [`menu`]: https://github.com/Cog-Creators/Red-DiscordBot/blob/46eb9ce7a0bcded991af02665fec39fcb542c76d/redbot/core/utils/menus.py#L17
 

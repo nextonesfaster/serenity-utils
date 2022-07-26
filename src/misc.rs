@@ -14,8 +14,6 @@ use serenity::{
 ///
 /// See [`add_reactions_blocking`] to add reactions in a blocking fashion. This
 /// function is slightly less efficient than the blocking counterpart.
-///
-/// [`add_reactions_blocking`]: add_reactions_blocking()
 pub async fn add_reactions(
     ctx: &Context,
     msg: &Message,
@@ -42,8 +40,6 @@ pub async fn add_reactions(
 /// of `emojis` is preserved.
 ///
 /// See [`add_reactions`] to add reactions in a non-blocking fashion.
-///
-/// [`add_reactions`]: add_reactions()
 pub async fn add_reactions_blocking(
     ctx: &Context,
     msg: &Message,
