@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning][semver].
 - [dependency] Update to use serenity v`0.11` \[[@AriusX7]; [c:825d98b]]
 - Deprecate `builder` and `conversion` modules \[[@AriusX7]; [c:df150a2], [c:b940d3e], [c:1a5b6e0]]
 - Improve documentation \[[@AriusX7]; [c:01e4f38]]
+- Bump to 2021 Rust edition \[[@AriusX7], [c:dcea087]]
+- Use new formatting rules \[[@AriusX7], [c:523ab9e]]
 
 ## [0.6.1] - 2021-02-01
 
@@ -113,3 +115,5 @@ This project adheres to [Semantic Versioning][semver].
 [c:b940d3e]: https://github.com/AriusX7/serenity-utils/commit/b940d3ea758309aacc61a50634c4ade3bf3748d0
 [c:1a5b6e0]: https://github.com/AriusX7/serenity-utils/commit/1a5b6e0184d517347ab70aab3cec2933cb32be91
 [c:01e4f38]: https://github.com/AriusX7/serenity-utils/commit/01e4f3812866127bae5d2cf83d96078894174294
+[c:dcea087]: https://github.com/AriusX7/serenity-utils/commit/dcea087d6bb693e2f39a4014d536a916da88414c
+[c:523ab9e]: https://github.com/AriusX7/serenity-utils/commit/523ab9e3012c69dab72f2809d32bef8499ba821b
