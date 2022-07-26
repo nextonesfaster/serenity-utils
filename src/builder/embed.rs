@@ -685,8 +685,8 @@ impl From<&EmbedBuilder> for CreateEmbed {
             embed.thumbnail(thumbnail);
         }
 
-        if let Some(timestamp) = &embed_builder.timestamp {
-            embed.timestamp(timestamp.clone());
+        if let Some(timestamp) = embed_builder.timestamp {
+            embed.timestamp(timestamp);
         }
 
         if let Some(title) = &embed_builder.title {
