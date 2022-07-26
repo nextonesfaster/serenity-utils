@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 use serenity::{builder::*, model::prelude::ReactionType};
 use serenity_utils::builder::prelude::*;
 
