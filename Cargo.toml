@@ -2,7 +2,7 @@
 name = "serenity_utils"
 version = "0.6.1"
 authors = ["AriusX7 <icyligii@gmail.com>"]
-edition = "2018"
+edition = "2021"
 license = "ISC"
 readme = "README.md"
 description = "A library to provide additional utilies for Discord bots created with serenity."
@@ -33,3 +33,7 @@ version = "1.0"
 default-features = false
 optional = true
 features = ["rt"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
