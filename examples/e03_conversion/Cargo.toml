@@ -11,7 +11,7 @@ edition = "2018"
 path = "../../"
 
 [dependencies.serenity]
-version = "0.10"
+version = "0.11"
 default-features = false
 features = ["framework", "standard_framework"]
 

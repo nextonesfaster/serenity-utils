@@ -2,7 +2,7 @@
 //!
 //! The functions defined in this module do not require any features to be enabled.
 
-use serenity::http::AttachmentType;
+use serenity::model::channel::AttachmentType;
 use std::{
     borrow::Cow,
     fmt::{Display, Write},

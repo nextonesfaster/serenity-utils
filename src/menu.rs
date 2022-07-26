@@ -203,7 +203,7 @@ impl<'a> Menu<'a> {
             .await_reactions(&self.ctx)
             .timeout(Duration::from_secs_f64(self.options.timeout))
             .author_id(self.msg.author.id)
-            .await;
+            .build();
 
         let (choice, reaction) = {
             let mut choice = None;

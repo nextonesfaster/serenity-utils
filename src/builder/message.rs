@@ -33,8 +33,7 @@
 use super::embed::EmbedBuilder;
 use serenity::{
     builder::{CreateMessage, EditMessage},
-    http::AttachmentType,
-    model::channel::ReactionType,
+    model::channel::{AttachmentType, ReactionType},
 };
 
 /// A struct to build a message.
@@ -288,7 +287,7 @@ impl<'a> From<&MessageBuilder<'a>> for CreateMessage<'a> {
     }
 }
 
-impl<'a> From<MessageBuilder<'a>> for EditMessage {
+impl<'a> From<MessageBuilder<'a>> for EditMessage<'_> {
     fn from(message_builder: MessageBuilder<'a>) -> Self {
         let mut message = EditMessage::default();
 
@@ -308,7 +307,7 @@ impl<'a> From<MessageBuilder<'a>> for EditMessage {
     }
 }
 
-impl<'a> From<&MessageBuilder<'a>> for EditMessage {
+impl<'a> From<&MessageBuilder<'a>> for EditMessage<'_> {
     fn from(message_builder: &MessageBuilder<'a>) -> Self {
         let mut message = EditMessage::default();
 

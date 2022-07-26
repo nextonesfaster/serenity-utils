@@ -10,6 +10,7 @@ use serenity::{
         CommandResult, StandardFramework,
     },
     model::prelude::{Message, ReactionType, Ready},
+    prelude::GatewayIntents,
 };
 
 // Bring prompt functions into scope.
@@ -37,11 +38,18 @@ async fn main() {
         .group(&GENERAL_GROUP);
 
     let token = env::var("DISCORD_TOKEN").expect("token");
-    let mut client = Client::builder(token)
-        .event_handler(Handler)
-        .framework(framework)
-        .await
-        .expect("Error creating client");
+    let mut client = Client::builder(
+        token,
+        GatewayIntents::GUILD_MESSAGES
+            | GatewayIntents::GUILD_MESSAGE_REACTIONS
+            | GatewayIntents::DIRECT_MESSAGES
+            | GatewayIntents::DIRECT_MESSAGE_REACTIONS
+            | GatewayIntents::MESSAGE_CONTENT,
+    )
+    .event_handler(Handler)
+    .framework(framework)
+    .await
+    .expect("Error creating client");
 
     if let Err(why) = client.start().await {
         println!("An error occurred while running the client: {:?}", why);
