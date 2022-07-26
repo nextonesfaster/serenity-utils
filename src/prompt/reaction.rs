@@ -81,9 +81,6 @@ use std::time::Duration;
 /// user does not have the required permissions to add reactions.
 ///
 /// Returns [`Error::TimeoutError`] if user does not react at all.
-///
-/// [`Error::SerenityError`]: crate::error::Error::SerenityError
-/// [`Error::TimeoutError`]: crate::error::Error::TimeoutError
 pub async fn reaction_prompt(
     ctx: &Context,
     msg: &Message,
@@ -155,8 +152,6 @@ pub async fn reaction_prompt(
 /// ## Errors
 ///
 /// It can return the same errors as [`reaction_prompt`].
-///
-/// [`reaction_prompt`]: reaction_prompt()
 pub async fn yes_or_no_prompt(
     ctx: &Context,
     msg: &Message,

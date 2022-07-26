@@ -8,16 +8,16 @@ use std::{
     fmt::{Display, Write},
 };
 
-/// A struct to set pagify's options.
+/// A struct to set [`pagify`]'s options.
 ///
 /// The default options are:
-/// - demils: &["\n", " "]
+/// - demils: &\["\n", " "\]
 /// - escape_mass_mentions: true
 /// - shorten_by: 0
 /// - page_length: 2000
 /// - priority: false
 ///
-/// The easiest way to build `PagifyOptions` is to use the builder-pattern:
+/// The easiest way to build [`PagifyOptions`] is to use the builder-pattern:
 ///
 /// ```
 /// # use serenity_utils::formatting::PagifyOptions;
@@ -220,15 +220,17 @@ pub fn pagify<S: ToString>(text: S, mut options: PagifyOptions<'_>) -> Vec<Strin
 /// A zero-width Unicode character (u200b) is added between `@` and `everyone` or `here`
 /// to escape the mention.
 ///
-/// Unlike serenity's `content_safe` function, this does not require the `cache`
+/// Unlike serenity's [`content_safe`] function, this does not require the `cache`
 /// feature to be enabled.
+///
+/// [`content_safe`]: serenity::utils::content_safe
 pub fn escape_mass_mentions<S: ToString>(text: S) -> String {
     text.to_string()
         .replace("@everyone", "@\u{200b}everyone")
         .replace("@here", "@\u{200b}here")
 }
 
-/// Creates serenity's `AttachmentType` from the given text.
+/// Creates serenity's [`AttachmentType`] from the given text.
 ///
 /// If `file_name` is not specified, `file.txt` is used as the default.
 /// If `spoiler` is set to `true`, the file is marked as spoiler by appending
