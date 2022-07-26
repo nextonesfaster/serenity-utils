@@ -15,15 +15,19 @@
 //! [`Red-DiscordBot`]: https://github.com/Cog-Creators/Red-DiscordBot/
 //! [`menu`]: https://github.com/Cog-Creators/Red-DiscordBot/blob/46eb9ce7a0bcded991af02665fec39fcb542c76d/redbot/core/utils/menus.py#L17
 
-use crate::{misc::add_reactions, Error};
-use serenity::{
-    builder::CreateMessage,
-    collector::ReactionAction,
-    futures::StreamExt,
-    model::prelude::{Message, Reaction, ReactionType},
-    prelude::Context,
-};
-use std::{future::Future, pin::Pin, sync::Arc, time::Duration};
+use std::future::Future;
+use std::pin::Pin;
+use std::sync::Arc;
+use std::time::Duration;
+
+use serenity::builder::CreateMessage;
+use serenity::collector::ReactionAction;
+use serenity::futures::StreamExt;
+use serenity::model::prelude::{Message, Reaction, ReactionType};
+use serenity::prelude::Context;
+
+use crate::misc::add_reactions;
+use crate::Error;
 
 /// Result variant for menu methods.
 pub type MenuResult = Result<(), Error>;
@@ -41,29 +45,23 @@ pub type MenuResult = Result<(), Error>;
 /// #     model::prelude::Message,
 /// #     prelude::Context,
 /// # };
-/// use serenity_utils::{
-///     menu::{Menu, MenuOptions},
-///     Error
-/// };
+/// use serenity_utils::menu::{Menu, MenuOptions};
+/// use serenity_utils::Error;
 ///
 /// async fn use_menu(ctx: &Context, msg: &Message) -> Result<(), Error> {
 ///     let mut message_one = CreateMessage::default();
-///     message_one
-///         .content("Page number one!")
-///         .embed(|e| {
-///             e.description("The first page!");
+///     message_one.content("Page number one!").embed(|e| {
+///         e.description("The first page!");
 ///
-///             e
-///         });
+///         e
+///     });
 ///
 ///     let mut message_two = CreateMessage::default();
-///     message_two
-///         .content("Page number two!")
-///         .embed(|e| {
-///             e.description("The second page!");
+///     message_two.content("Page number two!").embed(|e| {
+///         e.description("The second page!");
 ///
-///             e
-///         });
+///         e
+///     });
 ///
 ///     let pages = [message_one, message_two];
 ///
@@ -136,14 +134,14 @@ impl<'a> Menu<'a> {
                 Ok((index, reaction)) => match self.options.controls.get(index) {
                     Some(control) => {
                         Arc::clone(&control.function)(&mut self, reaction).await;
-                    }
+                    },
                     None => {
                         // We don't have to return an error for this as bot won't
                         // have permission to remove reactions in all cases. This
                         // is simply an inconvenience for the user.
                         let _ = self.clean_reactions().await;
                         break;
-                    }
+                    },
                 },
                 Err(e) => {
                     let _ = self.clean_reactions().await;
@@ -154,7 +152,7 @@ impl<'a> Menu<'a> {
                     } else {
                         return Err(e);
                     }
-                }
+                },
             }
         }
 
@@ -179,7 +177,7 @@ impl<'a> Menu<'a> {
                     m
                 })
                 .await?;
-            }
+            },
             None => {
                 let msg = self
                     .msg
@@ -194,7 +192,7 @@ impl<'a> Menu<'a> {
                 self.add_reactions(&msg).await?;
 
                 self.options.message = Some(msg);
-            }
+            },
         }
 
         let message = self.options.message.as_ref().unwrap();
@@ -239,22 +237,14 @@ impl<'a> Menu<'a> {
 
     async fn add_reactions(&self, msg: &Message) -> MenuResult {
         if self.options.non_blocking {
-            let emojis = self
-                .options
-                .controls
-                .iter()
-                .map(|c| c.emoji.clone())
-                .collect::<Vec<_>>();
+            let emojis = self.options.controls.iter().map(|c| c.emoji.clone()).collect::<Vec<_>>();
 
             add_reactions(self.ctx, msg, emojis).await?;
         } else {
             // Using `add_reactions_blocking` requires extra iteration so we do
             // it directly here.
             for control in &self.options.controls {
-                self.ctx
-                    .http
-                    .create_reaction(msg.channel_id.0, msg.id.0, &control.emoji)
-                    .await?;
+                self.ctx.http.create_reaction(msg.channel_id.0, msg.id.0, &control.emoji).await?;
             }
         }
 
@@ -380,7 +370,10 @@ pub struct Control {
 impl Control {
     /// Creates a new [`Control`] object.
     pub fn new(emoji: ReactionType, function: ControlFunction) -> Self {
-        Self { emoji, function }
+        Self {
+            emoji,
+            function,
+        }
     }
 }
 
@@ -482,11 +475,5 @@ pub async fn prev_page(menu: &mut Menu<'_>, reaction: Reaction) {
 ///
 /// `close_menu_cfn` is a [`ControlFunction`] and can be used to control a menu.
 pub async fn close_menu(menu: &mut Menu<'_>, _reaction: Reaction) {
-    let _ = menu
-        .options
-        .message
-        .as_ref()
-        .unwrap()
-        .delete(&menu.ctx.http)
-        .await;
+    let _ = menu.options.message.as_ref().unwrap().delete(&menu.ctx.http).await;
 }

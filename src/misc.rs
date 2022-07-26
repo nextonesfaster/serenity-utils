@@ -1,10 +1,8 @@
 //! Miscellaneous utility functions to aid with performing common tasks.
 
-use serenity::{
-    model::prelude::{Message, ReactionType},
-    prelude::Context,
-    Error,
-};
+use serenity::model::prelude::{Message, ReactionType};
+use serenity::prelude::Context;
+use serenity::Error;
 
 /// Adds reactions in a non-blocking fashion.
 ///
@@ -46,9 +44,7 @@ pub async fn add_reactions_blocking(
     emojis: &[ReactionType],
 ) -> Result<(), Error> {
     for emoji in emojis {
-        ctx.http
-            .create_reaction(msg.channel_id.0, msg.id.0, emoji)
-            .await?;
+        ctx.http.create_reaction(msg.channel_id.0, msg.id.0, emoji).await?;
     }
 
     Ok(())

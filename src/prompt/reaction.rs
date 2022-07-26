@@ -20,14 +20,15 @@
 //! }
 //! ```
 
-use crate::{error::Error, misc::add_reactions};
-use serenity::{
-    collector::ReactionAction,
-    futures::StreamExt,
-    model::prelude::{Message, ReactionType, User},
-    prelude::Context,
-};
 use std::time::Duration;
+
+use serenity::collector::ReactionAction;
+use serenity::futures::StreamExt;
+use serenity::model::prelude::{Message, ReactionType, User};
+use serenity::prelude::Context;
+
+use crate::error::Error;
+use crate::misc::add_reactions;
 
 /// Creates a reaction prompt to get user's reaction.
 ///
@@ -45,10 +46,7 @@ use std::time::Duration;
 /// #
 /// async fn prompt(ctx: &Context, msg: &Message) -> Result<(), Error> {
 ///     // Emojis for the prompt.
-///     let emojis = [
-///         ReactionType::from('🐶'),
-///         ReactionType::from('🐱'),
-///     ];
+///     let emojis = [ReactionType::from('🐶'), ReactionType::from('🐱')];
 ///
 ///     let prompt_msg = ChannelId(7).say(&ctx.http, "Dogs or cats?").await?;
 ///
@@ -56,14 +54,7 @@ use std::time::Duration;
 ///     // return type, you can use the `?` operator to get the result.
 ///     // The `Ok()` value is the selected emoji's index (wrt the `emojis` slice)
 ///     // and the emoji itself. We don't require the emoji here, so we ignore it.
-///     let (idx, _) = reaction_prompt(
-///         ctx,
-///         &prompt_msg,
-///         &msg.author,
-///         &emojis,
-///         30.0
-///     )
-///     .await?;
+///     let (idx, _) = reaction_prompt(ctx, &prompt_msg, &msg.author, &emojis, 30.0).await?;
 ///
 ///     if idx == 0 {
 ///         // Dogs!
@@ -131,13 +122,7 @@ pub async fn reaction_prompt(
 ///     let prompt_msg = ChannelId(7).say(&ctx.http, "Are you a bot?").await?;
 ///
 ///     // Creates a yes/no prompt and returns the result.
-///     let result = yes_or_no_prompt(
-///         ctx,
-///         &prompt_msg,
-///         &msg.author,
-///         30.0
-///     )
-///     .await?;
+///     let result = yes_or_no_prompt(ctx, &prompt_msg, &msg.author, 30.0).await?;
 ///
 ///     if result {
 ///         // Is a bot!
@@ -160,7 +145,5 @@ pub async fn yes_or_no_prompt(
 ) -> Result<bool, Error> {
     let emojis = [ReactionType::from('✅'), ReactionType::from('❌')];
 
-    reaction_prompt(ctx, msg, user, &emojis, timeout)
-        .await
-        .map(|(i, _)| i == 0)
+    reaction_prompt(ctx, msg, user, &emojis, timeout).await.map(|(i, _)| i == 0)
 }

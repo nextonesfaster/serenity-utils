@@ -30,11 +30,10 @@
 //!
 //! [`HashMap`]: std::collections::HashMap
 
-use serenity::{
-    builder::{CreateEmbed, CreateEmbedAuthor, CreateEmbedFooter},
-    model::{channel::EmbedField, Timestamp},
-    utils::Colour,
-};
+use serenity::builder::{CreateEmbed, CreateEmbedAuthor, CreateEmbedFooter};
+use serenity::model::channel::EmbedField;
+use serenity::model::Timestamp;
+use serenity::utils::Colour;
 
 /// A struct to build the author portion of an embed.
 ///
@@ -443,7 +442,6 @@ impl EmbedBuilder {
     ///     a
     /// });
     /// ```
-    ///
     pub fn set_author_with<F>(&mut self, f: F) -> &mut Self
     where
         F: FnOnce(&mut EmbedAuthorBuilder) -> &mut EmbedAuthorBuilder,
@@ -479,8 +477,7 @@ impl EmbedBuilder {
         T: ToString,
         U: ToString,
     {
-        self.fields
-            .push(EmbedFieldBuilder::new(field.0, field.1, field.2));
+        self.fields.push(EmbedFieldBuilder::new(field.0, field.1, field.2));
 
         self
     }
@@ -495,10 +492,8 @@ impl EmbedBuilder {
         T: ToString,
         U: ToString,
     {
-        let mut fields = fields
-            .into_iter()
-            .map(|(n, v, b)| EmbedFieldBuilder::new(n, v, b))
-            .collect::<Vec<_>>();
+        let mut fields =
+            fields.into_iter().map(|(n, v, b)| EmbedFieldBuilder::new(n, v, b)).collect::<Vec<_>>();
 
         self.fields.append(&mut fields);
 
@@ -539,7 +534,6 @@ impl EmbedBuilder {
     ///     f
     /// });
     /// ```
-    ///
     pub fn set_footer_with<F>(&mut self, f: F) -> &mut Self
     where
         F: FnOnce(&mut EmbedFooterBuilder) -> &mut EmbedFooterBuilder,
