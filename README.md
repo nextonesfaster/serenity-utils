@@ -1,6 +1,6 @@
 # serenity-utils
 
-[![docs badge][]][docs link] [![crates.io badge][]][crates.io link] [![license badge][]][license link] [![rust 1.39.0+ badge]][rust 1.39.0+ link]
+[![docs badge][]][docs link] [![crates.io badge][]][crates.io link] [![license badge][]][license link] [![rust 1.53.0+ badge]][rust 1.53.0+ link]
 
 A library to provide conversions, prompts and menu functionality for
 Discord bots created with [serenity].
@@ -169,5 +169,5 @@ features = ["cache", "native_tls_backend"]
 [docs link]: https://docs.rs/serenity_utils/
 [crates.io link]: https://crates.io/crates/serenity_utils
 [crates.io badge]: https://img.shields.io/crates/v/serenity_utils?color=00A1D0&label=crates.io&style=for-the-badge
-[rust 1.39.0+ badge]: https://img.shields.io/badge/rust-1.39.0+-93450a.svg?style=for-the-badge
-[rust 1.39.0+ link]: https://blog.rust-lang.org/2019/11/07/Rust-1.39.0.html
+[rust 1.53.0+ badge]: https://img.shields.io/badge/rust-1.53.0+-93450a.svg?style=for-the-badge
+[rust 1.53.0+ link]: https://blog.rust-lang.org/2021/06/17/Rust-1.53.0.html
