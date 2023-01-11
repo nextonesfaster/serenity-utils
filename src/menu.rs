@@ -23,7 +23,7 @@ use std::time::Duration;
 use serenity::builder::CreateMessage;
 use serenity::collector::ReactionAction;
 use serenity::futures::StreamExt;
-use serenity::model::prelude::{Message, Reaction, ReactionType};
+use serenity::model::prelude::{ChannelId, Message, Reaction, ReactionType, UserId};
 use serenity::prelude::Context;
 
 use crate::misc::add_reactions;
@@ -80,8 +80,10 @@ pub type MenuResult = Result<(), Error>;
 pub struct Menu<'a> {
     /// The Discord/serenity context.
     pub ctx: &'a Context,
-    /// The invocation message.
-    pub msg: &'a Message,
+    /// The ID of invoking user.
+    pub user_id: &'a UserId,
+    /// Channel to post menu.
+    pub channel_id: &'a ChannelId,
     /// The pages of the menu.
     pub pages: &'a [CreateMessage<'a>],
     /// The menu options.
@@ -96,9 +98,21 @@ impl<'a> Menu<'a> {
         pages: &'a [CreateMessage<'a>],
         options: MenuOptions,
     ) -> Self {
+        Self::new_from_ids(ctx, &msg.author.id, &msg.channel_id, pages, options)
+    }
+
+    /// Creates a new [`Menu`] object from the IDs of a user and a channel.
+    pub fn new_from_ids(
+        ctx: &'a Context,
+        user_id: &'a UserId,
+        channel_id: &'a ChannelId,
+        pages: &'a [CreateMessage<'a>],
+        options: MenuOptions,
+    ) -> Self {
         Self {
             ctx,
-            msg,
+            user_id,
+            channel_id,
             pages,
             options,
         }
@@ -180,7 +194,6 @@ impl<'a> Menu<'a> {
             },
             None => {
                 let msg = self
-                    .msg
                     .channel_id
                     .send_message(&self.ctx.http, |m| {
                         m.clone_from(page);
@@ -199,7 +212,7 @@ impl<'a> Menu<'a> {
         let mut reaction_collector = message
             .await_reactions(&self.ctx)
             .timeout(Duration::from_secs_f64(self.options.timeout))
-            .author_id(self.msg.author.id)
+            .author_id(self.user_id.to_owned())
             .build();
 
         let (choice, reaction) = {
